@@ -1,21 +1,32 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as bs
 
-# Make a request
 page = requests.get(
     "https://magecloud.agency/website-design-manchester/")
-soup = BeautifulSoup(page.content, 'html.parser')
-landing = []
+soup = bs(page.content, 'html.parser')
 
-PageContent = soup.select('container_full')
-for content in PageContent:
-    text = content.select('p.landing-text')[0].text
+#CONTENT ARRAYS
+HeaderHeading = []
+HeaderParagraph = []
+
+UnderHeaderHeading = []
+UnderHeaderParagraph = []
+
+MainContainerLanding = []
+
+FooterHeading = []
+FooterParagraph = []
+
+
+products = soup.select('div.main-container-landing')
+for elem in products:
+    title = elem.select('p')[0].text
     info = {
-        "Text": text.strip()
-        }
-    landing.append(info)
+        "title": title.strip()
+    }
+    MainContainerLanding.append(info)
 
-print(landing)
+print(MainContainerLanding)
 
 # Steps for getting content:
 
