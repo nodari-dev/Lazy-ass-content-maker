@@ -4,37 +4,46 @@ import random
 import presets
 
 # INPUT ARRAYS
-websitesCityList = [] # Min name of cities for dict
-websitesCityNames = [] # Full names of cities
+
+# Min name of cities for dict
+websitesCityList = []
+
+# Full names of cities
+websitesCityNames = []
+
 websitesDict = {}
+resultDict = {}
 
-city = 'Test'
+cityName = 'TEST CITY'
+mainCategory = 'Shopify'
 
+cityCategory = 'Wordpress'
+categoryList = ['Wordpress', 'Magento', 'Shopify', 'Development', 'Design']
 headContent = {
     'Title':
     {
-        'TitleDesign': '🥇 Web Design Agency in ' + city + '. Web designers in ' + city,
-        'TitleDev': '🥇 Web Development Agency in ' + city + '. Web developers in ' + city,
-        'TitleMagento': '🥇 Magento Web Development & eCommerce consulting agency in ' + city,
-        'TitleShopify': '🥇 Shopify Development Agency in ' + city + '. Web developers in ' + city,
-        'TitleWP': '🥇 WordPress & WooCommerce Development Agency in ' + city + '. Web developers in ' + city
+        'Design': '🥇 Web Design Agency in ' + cityName + '. Web designers in ' + cityName,
+        'Dev': '🥇 Web Development Agency in ' + cityName + '. Web developers in ' + cityName,
+        'Magento': '🥇 Magento Web Development & eCommerce consulting agency in ' + cityName,
+        'Shopify': '🥇 Shopify Development Agency in ' + cityName + '. Web developers in ' + cityName,
+        'WP': '🥇 WordPress & WooCommerce Development Agency in ' + cityName + '. Web developers in ' + cityName
     },
     'Meta':
     {
-        'MetaDesign': 'Web design agency in ' + city + ' ✅ with full-stack front-end back-end developers in ' + city + '⚡',
-        'MetaDev': 'Web development agency in ' + city + ' ✅ with full-stack frontend backend developers in ' + city + '⚡',
-        'MetaMagento': 'Magento agency in ' + city + ' ✅ with certified developers and solution specialists ready to start today. ⚡We design, develop and support.',
-        'MetaShopify': 'Shopify agency in ' + city + ' ✅ with full-stack frontend backend developers in ' + city + '.⚡',
-        'MetaWP': 'WordPress & WooCommerce agency in ' + city + ' ✅ with full-stack frontend backend developers in ' + city + '. ⚡'
+        'Design': 'Web design agency in ' + cityName + ' ✅ with full-stack front-end back-end developers in ' + cityName + '⚡',
+        'Dev': 'Web development agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '⚡',
+        'Magento': 'Magento agency in ' + cityName + ' ✅ with certified developers and solution specialists ready to start today. ⚡We design, develop and support.',
+        'Shopify': 'Shopify agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '.⚡',
+        'WP': 'WordPress & WooCommerce agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '. ⚡'
     }
 }
 
 # WRITE ALL STAGES OF GETTING AND COLLECTING
 
-def contentGenerator():
 
+def contentGenerator():
     # TODO: in main function run this function with arguments 'Categories' and smth else...
-    # TODO: Solve problem with categories and text replacement (design, dev) => KEYWORDS
+    #  Solve problem with categories and text replacement (design, dev) => KEYWORDS
     """
     This function gets links from txt file
     Get names of cities from links
@@ -57,10 +66,6 @@ def contentGenerator():
             websitesDict[websiteLink] = {
                 "City": getCityName(websiteLink),
                 "Category": getCategory(websiteLink),
-                # "underHeaderParagraph": 'Paragraph',
-                # "mainContainerLanding": "Content",
-
-                # "Content": websiteContent
             }
 
             # We use these functions to get all content from pages
@@ -68,12 +73,44 @@ def contentGenerator():
 
             getUnderHeader(websiteLink, websiteContent)
             getMainContainer(websiteLink, websiteContent)
+            getFooter(websiteLink, websiteContent)
 
-        # print(websitesDict.items())
-        for key, value in websitesDict.items():
-            print(str(key) + ' : ' + str(value) + '\n')
     finally:
         websitesFile.close()
+
+
+def contentCreator():
+    """
+    This function add random and specific content do resultDict
+    First: we need to check City and Category of website we need to create
+    Second: select by City and Category <title> and <meta>
+    Third: add random content to resultDict
+    Fought: replace all keywords
+    """
+    print('Generating result...')
+    # Add city, category and specific title & meta
+    resultDict['city'] = cityName
+    resultDict['mainCategory'] = mainCategory
+    resultDict['title'] = filterTitle(categoryList[1])
+    resultDict['meta'] = filterMeta(categoryList[1])
+
+    # if randomChoise():
+
+    # Get underheader
+    if True:
+        for key, val in websitesDict.items():
+            if websitesDict.get(key, {}).get('underHeaderHeading0'):
+                mainUnderHeaderHeading = websitesDict.get(key, {}).get('underHeaderHeading0')
+                print(mainUnderHeaderHeading)
+            else:
+                pass
+            # for subkey in val.items():
+    else:
+        pass
+
+    # resultDict['underHeaderHeading'] = '123'
+    # resultDict['underParagraph'] = 'text123'
+    # print(resultDict)
 
 
 def getCityName(websiteProc):
@@ -119,29 +156,6 @@ def getCategory(websiteProc):
             break
 
 
-def getMainContainer(linkProc, websiteProcContent):
-    """
-    This function gets all headings and paragraphs
-    from <div class="main-container-landing">
-    And write them into websitesDict
-    """
-    elements = websiteProcContent.find_all('div', class_='main-container-landing')
-
-    # 'n' variable is a count of found elements with same type
-    for n, element in enumerate(elements, start=0):
-        # here we find heading
-        heading = element.find('h2').text
-
-        # here we find paragraph
-        paragraph = element.find('p').text
-        # print(heading + '\n' + paragraph + '\n')
-
-        # we write every heading and paragraph into websiteDict with special number
-        # to see if they are in one block
-        websitesDict[linkProc]['mainHeading' + str(n)] = heading
-        websitesDict[linkProc]['mainParagraph' + str(n)] = paragraph
-
-
 def getUnderHeader(linkProc, websiteProcContent):
     """
     This function get heading and paragraph from div='underheader'
@@ -167,17 +181,79 @@ def getUnderHeader(linkProc, websiteProcContent):
         print('No block named underheader')
 
 
-def filterTitle(categoryTitle, categoryMeta):
+def getMainContainer(linkProc, websiteProcContent):
     """
-    This function select title and meta
+    This function gets all headings and paragraphs
+    from <div class="main-container-landing">
+    And write them into websitesDict
+    """
+    elements = websiteProcContent.find_all('div', class_='main-container-landing')
+
+    # 'n' variable is a count of found elements with same type
+    for n, element in enumerate(elements, start=0):
+        # here we find heading
+        heading = element.find('h2').text
+
+        # here we find paragraph
+        paragraph = element.find('p').text
+        # print(heading + '\n' + paragraph + '\n')
+
+        # we write every heading and paragraph into websiteDict with special number
+        # to see if they are in one block
+        websitesDict[linkProc]['mainHeading' + str(n)] = heading
+        websitesDict[linkProc]['mainParagraph' + str(n)] = paragraph
+
+
+def getFooter(linkProc, websiteProcContent):
+    """
+    This function get heading and paragraph from div='underheader'
+    Then write changes into websiteDict
+    """
+    elements = websiteProcContent.find_all('div', class_='container_full above-footer')
+    if len(elements) != 0:
+        for textEl in elements:
+            if 'h2' in str(textEl):
+                # First we get <h2> text and if exist such element
+                heading = textEl.text
+                # 'n' variable is a count of found elements with same type
+                for n, element in enumerate(elements, start=0):
+                    websitesDict[linkProc]['footerHeading' + str(n)] = heading
+                    break
+            else:
+                # First we get <p> text and if exist such element
+                paragraph = textEl.text
+                for n, element in enumerate(elements, start=0):
+                    websitesDict[linkProc]['footerParagraph' + str(n)] = paragraph
+                    break
+    else:
+        print('No block named abovefooter')
+
+
+def filterTitle(categoryTitle):
+    """
+    This function select title from category
     for generating final dict of info
     """
-    print(headContent['Title'][categoryTitle])
-    print(headContent['Meta'][categoryMeta])
+    title = headContent['Title'][categoryTitle]
+    return title
+
+
+def filterMeta(categoryMeta):
+    """
+    This function select meta from category
+    for generating final dict of info
+    """
+    meta = headContent['Meta'][categoryMeta]
+    return meta
+
+
+def randomChoise():
+    return random.choice([True, False])
+
 
 if __name__ == '__main__':
     contentGenerator()
-    # filterTitle('TitleDev', 'MetaDev')
+    contentCreator()
 
     # CityList = [str(item) for item in input("Enter list of cities : ").split()]
     # for city in CityList:
