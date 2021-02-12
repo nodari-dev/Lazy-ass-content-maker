@@ -70,47 +70,12 @@ def contentGenerator():
 
             # We use these functions to get all content from pages
             # Sort and add them to websiteDict
-
             getUnderHeader(websiteLink, websiteContent)
             getMainContainer(websiteLink, websiteContent)
             getFooter(websiteLink, websiteContent)
 
     finally:
         websitesFile.close()
-
-
-def contentCreator():
-    """
-    This function add random and specific content do resultDict
-    First: we need to check City and Category of website we need to create
-    Second: select by City and Category <title> and <meta>
-    Third: add random content to resultDict
-    Fought: replace all keywords
-    """
-    print('Generating result...')
-    # Add city, category and specific title & meta
-    resultDict['city'] = cityName
-    resultDict['mainCategory'] = mainCategory
-    resultDict['title'] = filterTitle(categoryList[1])
-    resultDict['meta'] = filterMeta(categoryList[1])
-
-    # if randomChoise():
-
-    # Get underheader
-    if True:
-        for key, val in websitesDict.items():
-            if websitesDict.get(key, {}).get('underHeaderHeading0'):
-                mainUnderHeaderHeading = websitesDict.get(key, {}).get('underHeaderHeading0')
-                print(mainUnderHeaderHeading)
-            else:
-                pass
-            # for subkey in val.items():
-    else:
-        pass
-
-    # resultDict['underHeaderHeading'] = '123'
-    # resultDict['underParagraph'] = 'text123'
-    # print(resultDict)
 
 
 def getCityName(websiteProc):
@@ -196,7 +161,6 @@ def getMainContainer(linkProc, websiteProcContent):
 
         # here we find paragraph
         paragraph = element.find('p').text
-        # print(heading + '\n' + paragraph + '\n')
 
         # we write every heading and paragraph into websiteDict with special number
         # to see if they are in one block
@@ -206,7 +170,7 @@ def getMainContainer(linkProc, websiteProcContent):
 
 def getFooter(linkProc, websiteProcContent):
     """
-    This function get heading and paragraph from div='underheader'
+    This function get heading and paragraph from div='abovefooter'
     Then write changes into websiteDict
     """
     elements = websiteProcContent.find_all('div', class_='container_full above-footer')
@@ -229,6 +193,30 @@ def getFooter(linkProc, websiteProcContent):
         print('No block named abovefooter')
 
 
+def contentCreator():
+    """
+    This function add random and specific content do resultDict
+    First: we need to check City and Category of website we need to create
+    Second: select by City and Category <title> and <meta>
+    Third: add random content to resultDict
+    Fought: replace all keywords
+    """
+    print('Generating result...')
+    # Add city, category and specific title & meta
+    resultDict['city'] = cityName
+    resultDict['mainCategory'] = mainCategory
+    resultDict['title'] = filterTitle(categoryList[1])
+    resultDict['meta'] = filterMeta(categoryList[1])
+    # if random.choice([True, False]):
+    #     resultDict['mainUnderHeaderHeading'] = createUnderHeader('underHeaderHeading'),
+    #     resultDict['mainUnderHeaderParagraph'] = createUnderHeader('underHeaderParagraph')
+    # else:
+    #     pass
+
+    for key, value in resultDict.items():
+        print(str(key) + ' : ' + str(value) + '\n')
+
+
 def filterTitle(categoryTitle):
     """
     This function select title from category
@@ -246,15 +234,30 @@ def filterMeta(categoryMeta):
     meta = headContent['Meta'][categoryMeta]
     return meta
 
-
-def randomChoise():
-    return random.choice([True, False])
+#
+# def createUnderHeader():
+#     """
+#     This function create random underHeader content
+#     And then add it to resultDict
+#     """
+#     searchKey = 'HeaderHeading'
+#     result = []
+#     try:
+#         for key, value in websitesDict.items():
+#             for subKey in websitesDict.get(key, {}):
+#                 if searchKey in str(subKey):
+#                     result.append(websitesDict[key][subKey])
+#         return result[random.randint(0, len(result))]
+#         print(result[random.randint(0, len(result))])
+#     except NameError:
+#         print('none')
+#
 
 
 if __name__ == '__main__':
     contentGenerator()
-    contentCreator()
-
+    # contentCreator()
+    createUnderHeader()
     # CityList = [str(item) for item in input("Enter list of cities : ").split()]
     # for city in CityList:
     #     for category in CategoryList:

@@ -1,12 +1,17 @@
-st = 'this is a test string'
+# initializing dictionary
+test_dict = {
+    '1': {
+        'underHeaderHeading0': "value0",
+        'underHeaderHeading1': "value1",
+        'underHeaderHeading2': "value2"
+    }
+}
 
-def Capitalize(st):
-    for word in st.split():
-        newstring = ''
-        if len(word) > 1:
-            word = word[0].upper() + word[1:-1] + word[-1].upper()
-        else:
-            word = word[0].upper()
-        newstring += word
-        print(word)
-Capitalize(st)
+# initializing search key string 
+search_key = 'underHeader'
+result = []
+# printing original dictionary
+for key, value in test_dict.items():
+    for subKey in test_dict.get(key, {}):
+        print(test_dict[key][subKey])
+# print(str(res))
