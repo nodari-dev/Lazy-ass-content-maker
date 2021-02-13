@@ -14,6 +14,8 @@ websitesCityNames = []
 websitesDict = {}
 resultDict = {}
 
+
+# TODO: Add new preset content for <header>
 cityName = 'TEST CITY'
 mainCategory = 'Shopify'
 
@@ -21,25 +23,22 @@ cityCategory = 'Wordpress'
 categoryList = ['Wordpress', 'Magento', 'Shopify', 'Development', 'Design']
 headContent = {
     'Title':
-    {
-        'Design': '🥇 Web Design Agency in ' + cityName + '. Web designers in ' + cityName,
-        'Dev': '🥇 Web Development Agency in ' + cityName + '. Web developers in ' + cityName,
-        'Magento': '🥇 Magento Web Development & eCommerce consulting agency in ' + cityName,
-        'Shopify': '🥇 Shopify Development Agency in ' + cityName + '. Web developers in ' + cityName,
-        'WP': '🥇 WordPress & WooCommerce Development Agency in ' + cityName + '. Web developers in ' + cityName
-    },
+        {
+            'Design': '🥇 Web Design Agency in ' + cityName + '. Web designers in ' + cityName,
+            'Dev': '🥇 Web Development Agency in ' + cityName + '. Web developers in ' + cityName,
+            'Magento': '🥇 Magento Web Development & eCommerce consulting agency in ' + cityName,
+            'Shopify': '🥇 Shopify Development Agency in ' + cityName + '. Web developers in ' + cityName,
+            'WP': '🥇 WordPress & WooCommerce Development Agency in ' + cityName + '. Web developers in ' + cityName
+        },
     'Meta':
-    {
-        'Design': 'Web design agency in ' + cityName + ' ✅ with full-stack front-end back-end developers in ' + cityName + '⚡',
-        'Dev': 'Web development agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '⚡',
-        'Magento': 'Magento agency in ' + cityName + ' ✅ with certified developers and solution specialists ready to start today. ⚡We design, develop and support.',
-        'Shopify': 'Shopify agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '.⚡',
-        'WP': 'WordPress & WooCommerce agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '. ⚡'
-    }
+        {
+            'Design': 'Web design agency in ' + cityName + ' ✅ with full-stack front-end back-end developers in ' + cityName + '⚡',
+            'Dev': 'Web development agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '⚡',
+            'Magento': 'Magento agency in ' + cityName + ' ✅ with certified developers and solution specialists ready to start today. ⚡We design, develop and support.',
+            'Shopify': 'Shopify agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '.⚡',
+            'WP': 'WordPress & WooCommerce agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '. ⚡'
+        }
 }
-
-# WRITE ALL STAGES OF GETTING AND COLLECTING
-
 
 def contentGenerator():
     # TODO: in main function run this function with arguments 'Categories' and smth else...
@@ -196,10 +195,10 @@ def getFooter(linkProc, websiteProcContent):
 def contentCreator():
     """
     This function add random and specific content do resultDict
-    First: we need to check City and Category of website we need to create
-    Second: select by City and Category <title> and <meta>
-    Third: add random content to resultDict
-    Fought: replace all keywords
+    1: we need to check City and Category of website we need to create
+    2: select by City and Category <title> and <meta>
+    3: add random content to resultDict
+    4: replace all keywords
     """
     print('Generating result...')
     # Add city, category and specific title & meta
@@ -217,22 +216,12 @@ def contentCreator():
         print(str(key) + ' : ' + str(value) + '\n')
 
 
-def filterTitle(categoryTitle):
-    """
-    This function select title from category
-    for generating final dict of info
-    """
-    title = headContent['Title'][categoryTitle]
-    return title
+# These lambda functions select title and meta from category
+# And return value to resultDict
 
+filterTitle = lambda title: headContent['Title'][title]
 
-def filterMeta(categoryMeta):
-    """
-    This function select meta from category
-    for generating final dict of info
-    """
-    meta = headContent['Meta'][categoryMeta]
-    return meta
+filterMeta = lambda meta: headContent['Meta'][meta]
 
 
 def createUnderHeader(searchKey):
@@ -256,8 +245,9 @@ def createUnderHeader(searchKey):
 if __name__ == '__main__':
     contentGenerator()
     contentCreator()
+    # TODO: run in loop only contentCreator()
+    #   To get all content only one time
+
     # CityList = [str(item) for item in input("Enter list of cities : ").split()]
     # for city in CityList:
     #     for category in CategoryList:
-
-

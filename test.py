@@ -1,3 +1,2 @@
-import random
-result = [1, 3, 4, 5, 6]
-print()
+add_one = lambda x: x + 1
+add_one(2)
