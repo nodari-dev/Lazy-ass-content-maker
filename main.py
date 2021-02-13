@@ -207,11 +207,11 @@ def contentCreator():
     resultDict['mainCategory'] = mainCategory
     resultDict['title'] = filterTitle(categoryList[1])
     resultDict['meta'] = filterMeta(categoryList[1])
-    # if random.choice([True, False]):
-    #     resultDict['mainUnderHeaderHeading'] = createUnderHeader('underHeaderHeading'),
-    #     resultDict['mainUnderHeaderParagraph'] = createUnderHeader('underHeaderParagraph')
-    # else:
-    #     pass
+    if random.choice([True, False]):
+        resultDict['mainUnderHeaderHeading'] = createUnderHeader('underHeaderHeading'),
+        resultDict['mainUnderHeaderParagraph'] = createUnderHeader('underHeaderParagraph')
+    else:
+        pass
 
     for key, value in resultDict.items():
         print(str(key) + ' : ' + str(value) + '\n')
@@ -234,30 +234,28 @@ def filterMeta(categoryMeta):
     meta = headContent['Meta'][categoryMeta]
     return meta
 
-#
-# def createUnderHeader():
-#     """
-#     This function create random underHeader content
-#     And then add it to resultDict
-#     """
-#     searchKey = 'HeaderHeading'
-#     result = []
-#     try:
-#         for key, value in websitesDict.items():
-#             for subKey in websitesDict.get(key, {}):
-#                 if searchKey in str(subKey):
-#                     result.append(websitesDict[key][subKey])
-#         return result[random.randint(0, len(result))]
-#         print(result[random.randint(0, len(result))])
-#     except NameError:
-#         print('none')
-#
+
+def createUnderHeader(searchKey):
+    """
+    This function create random underHeader content
+    And then add it to resultDict
+    """
+    result = []
+    for key, value in websitesDict.items():
+        for subKey in websitesDict.get(key, {}):
+            if searchKey in str(subKey):
+                result.append(websitesDict[key][subKey])
+            else:
+                pass
+    if len(result) > 0:
+        return result[random.randint(0, len(result) - 1)]
+    else:
+        pass
 
 
 if __name__ == '__main__':
     contentGenerator()
-    # contentCreator()
-    createUnderHeader()
+    contentCreator()
     # CityList = [str(item) for item in input("Enter list of cities : ").split()]
     # for city in CityList:
     #     for category in CategoryList:
