@@ -126,23 +126,27 @@ def getUnderHeader(linkProc, websiteProcContent):
     Then write changes into websiteDict
     """
     elements = websiteProcContent.find_all('div', class_='container_full underheader')
-    if len(elements) != 0:
-        for textEl in elements:
-            if 'h2' in str(textEl):
-                # First we get <h2> text and if exist such element
-                heading = textEl.text
-                # 'n' variable is a count of found elements with same type
-                for n, element in enumerate(elements, start=0):
-                    websitesDict[linkProc]['underHeaderHeading' + str(n)] = heading
-                    break
-            else:
-                # First we get <p> text and if exist such element
-                paragraph = textEl.text
-                for n, element in enumerate(elements, start=0):
-                    websitesDict[linkProc]['underHeaderParagraph' + str(n)] = paragraph
-                    break
-    else:
+    try:
+        elements[0]
+    except IndexError:
         print('No block named underheader')
+    else:
+        if len(elements) != 0:
+            for textEl in elements:
+                if 'h2' in str(textEl):
+                    # First we get <h2> text and if exist such element
+                    heading = textEl.text
+                    # 'n' variable is a count of found elements with same type
+                    for n, element in enumerate(elements, start=0):
+                        websitesDict[linkProc]['underHeaderHeading' + str(n)] = heading
+                        break
+                else:
+                    # First we get <p> text and if exist such element
+                    paragraph = textEl.text
+                    for n, element in enumerate(elements, start=0):
+                        websitesDict[linkProc]['underHeaderParagraph' + str(n)] = paragraph
+                        break
+
 
 
 def getMainContainer(linkProc, websiteProcContent):
@@ -152,19 +156,23 @@ def getMainContainer(linkProc, websiteProcContent):
     And write them into websitesDict
     """
     elements = websiteProcContent.find_all('div', class_='main-container-landing')
+    try:
+        elements[0]
+    except NameError:
+        print('No div with class "main-container-landing"')
+    else:
+        # 'n' variable is a count of found elements with same type
+        for n, element in enumerate(elements, start=0):
+            # here we find heading
+            heading = element.find('h2').text
 
-    # 'n' variable is a count of found elements with same type
-    for n, element in enumerate(elements, start=0):
-        # here we find heading
-        heading = element.find('h2').text
+            # here we find paragraph
+            paragraph = element.find('p').text
 
-        # here we find paragraph
-        paragraph = element.find('p').text
-
-        # we write every heading and paragraph into websiteDict with special number
-        # to see if they are in one block
-        websitesDict[linkProc]['mainHeading' + str(n)] = heading
-        websitesDict[linkProc]['mainParagraph' + str(n)] = paragraph
+            # we write every heading and paragraph into websiteDict with special number
+            # to see if they are in one block
+            websitesDict[linkProc]['mainHeading' + str(n)] = heading
+            websitesDict[linkProc]['mainParagraph' + str(n)] = paragraph
 
 
 def getFooter(linkProc, websiteProcContent):
@@ -173,7 +181,11 @@ def getFooter(linkProc, websiteProcContent):
     Then write changes into websiteDict
     """
     elements = websiteProcContent.find_all('div', class_='container_full above-footer')
-    if len(elements) != 0:
+    try:
+        elements[0]
+    except NameError:
+        print('No block named "above-footer"')
+    else:
         for textEl in elements:
             if 'h2' in str(textEl):
                 # First we get <h2> text and if exist such element
@@ -188,8 +200,6 @@ def getFooter(linkProc, websiteProcContent):
                 for n, element in enumerate(elements, start=0):
                     websitesDict[linkProc]['footerParagraph' + str(n)] = paragraph
                     break
-    else:
-        print('No block named abovefooter')
 
 
 def contentCreator():
@@ -244,7 +254,7 @@ def createUnderHeader(searchKey):
 
 if __name__ == '__main__':
     contentGenerator()
-    contentCreator()
+    # contentCreator()
     # TODO: run in loop only contentCreator()
     #   To get all content only one time
 
