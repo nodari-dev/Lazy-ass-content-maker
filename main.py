@@ -183,7 +183,7 @@ def getFooter(linkProc, websiteProcContent):
     elements = websiteProcContent.find_all('div', class_='container_full above-footer')
     try:
         elements[0]
-    except NameError:
+    except IndexError:
         print('No block named "above-footer"')
     else:
         for textEl in elements:
@@ -254,7 +254,7 @@ def createUnderHeader(searchKey):
 
 if __name__ == '__main__':
     contentGenerator()
-    # contentCreator()
+    contentCreator()
     # TODO: run in loop only contentCreator()
     #   To get all content only one time
 
