@@ -14,44 +14,45 @@ websitesCityNames = []
 websitesDict = {}
 resultDict = {}
 
-cityName = 'TEST CITY'
+mainCity = 'TEST CITY'
+mainCategory = 'TEST CATEGORY'
 
 categoryList = ['wordpress', 'magento', 'shopify', 'development', 'design']
 headContent = {
     'title':
         {
-            'design': '🥇 Web Design Agency in ' + cityName + '. Web designers in ' + cityName,
-            'development': '🥇 Web Development Agency in ' + cityName + '. Web developers in ' + cityName,
-            'magento': '🥇 Magento Web Development & eCommerce consulting agency in ' + cityName,
-            'shopify': '🥇 Shopify Development Agency in ' + cityName + '. Web developers in ' + cityName,
-            'wordpress': '🥇 WordPress & WooCommerce Development Agency in ' + cityName + '. Web developers in ' + cityName
+            'design': '🥇 Web Design Agency in ' + mainCity + '. Web designers in ' + mainCity,
+            'development': '🥇 Web Development Agency in ' + mainCity + '. Web developers in ' + mainCity,
+            'magento': '🥇 Magento Web Development & eCommerce consulting agency in ' + mainCity,
+            'shopify': '🥇 Shopify Development Agency in ' + mainCity + '. Web developers in ' + mainCity,
+            'wordpress': '🥇 WordPress & WooCommerce Development Agency in ' + mainCity + '. Web developers in ' + mainCity
         },
     'meta':
         {
-            'design': 'Web design agency in ' + cityName + ' ✅ with full-stack front-end back-end developers in ' + cityName + '⚡',
-            'development': 'Web development agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '⚡',
-            'magento': 'Magento agency in ' + cityName + ' ✅ with certified developers and solution specialists ready to start today. ⚡We design, develop and support.',
-            'shopify': 'Shopify agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '.⚡',
-            'wordpress': 'WordPress & WooCommerce agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '. ⚡'
+            'design': 'Web design agency in ' + mainCity + ' ✅ with full-stack front-end back-end developers in ' + mainCity + '⚡',
+            'development': 'Web development agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '⚡',
+            'magento': 'Magento agency in ' + mainCity + ' ✅ with certified developers and solution specialists ready to start today. ⚡We design, develop and support.',
+            'shopify': 'Shopify agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '.⚡',
+            'wordpress': 'WordPress & WooCommerce agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '. ⚡'
         }
 }
 
 headerContent = {
     "heading":
         {
-            'design': 'Web design agency in <strong>' + cityName + '</strong> with top-rated designers, developers, and marketing managers in <strong>' + cityName + '</strong>',
-            'development': 'Web development agency in <strong>' + cityName + '</strong> with top-rated full-stack developers',
-            'magento': 'Magento Agency in <strong>' + cityName + '</strong>. Expert Magento Web Development in <strong>' + cityName + '</strong>',
-            'shopify': 'Shopify development agency in <strong>' + cityName + '</strong> with top-rated full-stack developers',
-            'wordpress': 'Wordpress &amp; WooCommerce development agency in <strong>' + cityName + '</strong> with top-rated full-stack developers'
+            'design': 'Web design agency in <strong>' + mainCity + '</strong> with top-rated designers, developers, and marketing managers in <strong>' + mainCity + '</strong>',
+            'development': 'Web development agency in <strong>' + mainCity + '</strong> with top-rated full-stack developers',
+            'magento': 'Magento Agency in <strong>' + mainCity + '</strong>. Expert Magento Web Development in <strong>' + mainCity + '</strong>',
+            'shopify': 'Shopify development agency in <strong>' + mainCity + '</strong> with top-rated full-stack developers',
+            'wordpress': 'Wordpress &amp; WooCommerce development agency in <strong>' + mainCity + '</strong> with top-rated full-stack developers'
         },
     "paragraph":
         {
-            'design': 'We provide full-stack developers in ' + cityName + '. Our agency support clients around Manchester and surrounding areas',
-            'development': 'We provide full-stack development and support service in ' + cityName + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
-            'magento': 'We provide full-stack Magento development and support service in ' + cityName + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
-            'shopify': 'We provide full-stack Shopify development and support service ' + cityName + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
-            'wordpress': 'We provide full-stack Wordpress & WooCommerce developers in ' + cityName + '. Our WordPress & WooCommerce agency support clients around ' + cityName + ' and surrounding areas'
+            'design': 'We provide full-stack developers in ' + mainCity + '. Our agency support clients around Manchester and surrounding areas',
+            'development': 'We provide full-stack development and support service in ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
+            'magento': 'We provide full-stack Magento development and support service in ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
+            'shopify': 'We provide full-stack Shopify development and support service ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
+            'wordpress': 'We provide full-stack Wordpress & WooCommerce developers in ' + mainCity + '. Our WordPress & WooCommerce agency support clients around ' + mainCity + ' and surrounding areas'
         }
 }
 
@@ -70,9 +71,9 @@ mainContainer = {
         },
     "magento":
         {
-            "headingOne": 'Your Magento Ecommerce <br> Development Partner in <strong>' + cityName + '</strong>',
-            "headingTwo": 'Magento Ecommerce Design <br> in <strong>' + cityName + '</strong>',
-            "headingThree": 'Creative Marketing Strategy for <br> Magento in <strong>' + cityName + '</strong>'
+            "headingOne": 'Your Magento Ecommerce <br> Development Partner in <strong>' + mainCity + '</strong>',
+            "headingTwo": 'Magento Ecommerce Design <br> in <strong>' + mainCity + '</strong>',
+            "headingThree": 'Creative Marketing Strategy for <br> Magento in <strong>' + mainCity + '</strong>'
         },
     "shopify":
         {
@@ -273,10 +274,11 @@ def contentCreator():
     #     createUnderHeader('underHeaderParagraph')
     # else:
     #     pass
-    createMainContainer()
+    createMainContainer('mainParagraph')
 
-    # testResult()
-    # testWebsites()
+    testDict(websitesDict)
+    # testDict(resultDict)
+
 
 """
 These lambda functions select title and meta from category
@@ -323,26 +325,35 @@ def createUnderHeader(searchKey):
             resultDict['mainUnderHeaderParagraph'] = result[random.randint(0, len(result) - 1)]
 
 
-def createMainContainer():
+def createMainContainer(searchKey):
     """
      This function create random mainContainer content
      And then add it to resultDict
      """
-
-    searchKey = 'mainParagraph'
-
     result = []
     i = 0
     # Add all founded values by searchKey to result[]
     for key, value in websitesDict.items():
         for subKey in websitesDict.get(key, {}):
             if searchKey in str(subKey):
-                print(websitesDict[key]['City'])
+                # Here we get current city name and category
+                # Then check if this string is in paragraph
+                # And replace to mainCity and mainCategory
+                cityToReplace = str(websitesDict[key]['City'])
+                categoryToReplace = str(websitesDict[key]['Category'])
+                paragraphToChange = str(websitesDict[key][subKey])
+
+                # TODO: set correct categories for websitesDict
+                if cityToReplace in paragraphToChange:
+                    paragraphToChange = paragraphToChange.replace(cityToReplace, mainCity)
+                    # print('PARAGRAPH = CITY')
+                elif categoryToReplace in paragraphToChange:
+                    paragraphToChange = paragraphToChange.replace(cityToReplace, mainCategory)
+                    # print('PARAGRAPH = CATEGORY')
                 # result.append(websitesDict[key][subKey])
             else:
                 pass
     # TODO: Catch texts and headings which repeat
-    #   Get current city and category to replace
     # Catch empty array
     # try:
     #     result[0]
@@ -356,13 +367,8 @@ def createMainContainer():
     #         resultDict['mainUnderHeaderParagraph'] = result[random.randint(0, len(result) - 1)]
 
 
-def testResult():
-    for key, value in resultDict.items():
-        print(str(key) + ' : ' + str(value) + '\n')
-
-
-def testWebsites():
-    for key, value in websitesDict.items():
+def testDict(dict):
+    for key, value in dict.items():
         print(str(key) + ' : ' + str(value) + '\n')
 
 

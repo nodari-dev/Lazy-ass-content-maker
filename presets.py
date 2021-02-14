@@ -1,8 +1,8 @@
 
 categoryDict = {
-    'website-development': 'Web Development',
-    'website-design': 'Web Design',
-    'magento-agency': 'Magento agency',
+    'website-development': 'Development',
+    'website-design': 'Design',
+    'magento-agency': 'Magento',
     'wordpress-woocommerce-development-agency': 'Wordpress',
     'shopify-development-agency': 'Shopify'
 }
