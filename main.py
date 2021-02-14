@@ -14,29 +14,79 @@ websitesCityNames = []
 websitesDict = {}
 resultDict = {}
 
-
-# TODO: Add new preset content for <header>
 cityName = 'TEST CITY'
-mainCategory = 'Shopify'
 
-cityCategory = 'Wordpress'
-categoryList = ['Wordpress', 'Magento', 'Shopify', 'Development', 'Design']
+categoryList = ['wordpress', 'magento', 'shopify', 'development', 'design']
 headContent = {
-    'Title':
+    'title':
         {
-            'Design': '🥇 Web Design Agency in ' + cityName + '. Web designers in ' + cityName,
-            'Dev': '🥇 Web Development Agency in ' + cityName + '. Web developers in ' + cityName,
-            'Magento': '🥇 Magento Web Development & eCommerce consulting agency in ' + cityName,
-            'Shopify': '🥇 Shopify Development Agency in ' + cityName + '. Web developers in ' + cityName,
-            'WP': '🥇 WordPress & WooCommerce Development Agency in ' + cityName + '. Web developers in ' + cityName
+            'design': '🥇 Web Design Agency in ' + cityName + '. Web designers in ' + cityName,
+            'development': '🥇 Web Development Agency in ' + cityName + '. Web developers in ' + cityName,
+            'magento': '🥇 Magento Web Development & eCommerce consulting agency in ' + cityName,
+            'shopify': '🥇 Shopify Development Agency in ' + cityName + '. Web developers in ' + cityName,
+            'wordpress': '🥇 WordPress & WooCommerce Development Agency in ' + cityName + '. Web developers in ' + cityName
         },
-    'Meta':
+    'meta':
         {
-            'Design': 'Web design agency in ' + cityName + ' ✅ with full-stack front-end back-end developers in ' + cityName + '⚡',
-            'Dev': 'Web development agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '⚡',
-            'Magento': 'Magento agency in ' + cityName + ' ✅ with certified developers and solution specialists ready to start today. ⚡We design, develop and support.',
-            'Shopify': 'Shopify agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '.⚡',
-            'WP': 'WordPress & WooCommerce agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '. ⚡'
+            'design': 'Web design agency in ' + cityName + ' ✅ with full-stack front-end back-end developers in ' + cityName + '⚡',
+            'development': 'Web development agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '⚡',
+            'magento': 'Magento agency in ' + cityName + ' ✅ with certified developers and solution specialists ready to start today. ⚡We design, develop and support.',
+            'shopify': 'Shopify agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '.⚡',
+            'wordpress': 'WordPress & WooCommerce agency in ' + cityName + ' ✅ with full-stack frontend backend developers in ' + cityName + '. ⚡'
+        }
+}
+
+headerContent = {
+    "heading":
+        {
+            'design': 'Web design agency in <strong>' + cityName + '</strong> with top-rated designers, developers, and marketing managers in <strong>' + cityName + '</strong>',
+            'development': 'Web development agency in <strong>' + cityName + '</strong> with top-rated full-stack developers',
+            'magento': 'Magento Agency in <strong>' + cityName + '</strong>. Expert Magento Web Development in <strong>' + cityName + '</strong>',
+            'shopify': 'Shopify development agency in <strong>' + cityName + '</strong> with top-rated full-stack developers',
+            'wordpress': 'Wordpress &amp; WooCommerce development agency in <strong>' + cityName + '</strong> with top-rated full-stack developers'
+        },
+    "paragraph":
+        {
+            'design': 'We provide full-stack developers in ' + cityName + '. Our agency support clients around Manchester and surrounding areas',
+            'development': 'We provide full-stack development and support service in ' + cityName + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
+            'magento': 'We provide full-stack Magento development and support service in ' + cityName + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
+            'shopify': 'We provide full-stack Shopify development and support service ' + cityName + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
+            'wordpress': 'We provide full-stack Wordpress & WooCommerce developers in ' + cityName + '. Our WordPress & WooCommerce agency support clients around ' + cityName + ' and surrounding areas'
+        }
+}
+
+mainContainer = {
+    "design":
+        {
+            "headingOne": 'Give Your Competition a <strong>Run for Its Money</strong>',
+            "headingTwo": 'The MageCloud Web <strong>Web Design Difference</strong>'
+        },
+    "development":
+        {
+            "headingOne": 'Back-end <strong>Development</strong>',
+            "headingTwo": 'Front-end <strong>Development</strong>',
+            "headingThree": "Platform <strong>Integrations</strong>",
+            "headingFour": "Plugin <strong>Development</strong>"
+        },
+    "magento":
+        {
+            "headingOne": 'Your Magento Ecommerce <br> Development Partner in <strong>' + cityName + '</strong>',
+            "headingTwo": 'Magento Ecommerce Design <br> in <strong>' + cityName + '</strong>',
+            "headingThree": 'Creative Marketing Strategy for <br> Magento in <strong>' + cityName + '</strong>'
+        },
+    "shopify":
+        {
+            "headingOne": 'Back-end <strong>Development</strong>',
+            "headingTwo": 'Front-end <strong>Development</strong>',
+            "headingThree": "Platform <strong>Integrations</strong>",
+            "headingFour": "Plugin <strong>Development</strong>"
+        },
+    "wordpress":
+        {
+            "headingOne": 'Back-end <strong>Development</strong>',
+            "headingTwo": 'Front-end <strong>Development</strong>',
+            "headingThree": "Platform <strong>Integrations</strong>",
+            "headingFour": "Plugin <strong>Development</strong>"
         }
 }
 
@@ -148,7 +198,6 @@ def getUnderHeader(linkProc, websiteProcContent):
                         break
 
 
-
 def getMainContainer(linkProc, websiteProcContent):
     """
     This function gets all headings and paragraphs
@@ -212,23 +261,40 @@ def contentCreator():
     """
     print('Generating result...')
     # Add city, category and specific title & meta
-    resultDict['city'] = cityName
-    resultDict['mainCategory'] = mainCategory
-    resultDict['title'] = filterTitle(categoryList[1])
-    resultDict['meta'] = filterMeta(categoryList[1])
-    createUnderHeader('underHeaderHeading')
-    createUnderHeader('underHeaderParagraph')
 
-    for key, value in resultDict.items():
-        print(str(key) + ' : ' + str(value) + '\n')
+    # resultDict['city'] = cityName
+    # resultDict['mainCategory'] = 'CATEGORY'
+    # resultDict['title'] = filterTitle(categoryList[1])
+    # resultDict['meta'] = filterMeta(categoryList[1])
+    # resultDict['headerHeading'] = filterHeaderHeading(categoryList[1])
+    # resultDict['headerParagraph'] = filterHeaderParagraph(categoryList[1])
+    # if random.choice([True, False]):
+    #     createUnderHeader('underHeaderHeading')
+    #     createUnderHeader('underHeaderParagraph')
+    # else:
+    #     pass
+    createMainContainer()
 
+    # testResult()
+    # testWebsites()
 
-# These lambda functions select title and meta from category
-# And return value to resultDict
+"""
+These lambda functions select title and meta from category
+And return value to resultDict
+"""
 
-filterTitle = lambda title: headContent['Title'][title]
+filterTitle = lambda title: headContent['title'][title]
 
-filterMeta = lambda meta: headContent['Meta'][meta]
+filterMeta = lambda meta: headContent['meta'][meta]
+
+"""
+These lambda functions select heading and paragraph from headerContent
+And return value to resultDict
+"""
+
+filterHeaderHeading = lambda headerHeading: headerContent['heading'][headerHeading]
+
+filterHeaderParagraph = lambda headerHeading: headerContent['paragraph'][headerHeading]
 
 
 def createUnderHeader(searchKey):
@@ -248,13 +314,56 @@ def createUnderHeader(searchKey):
     try:
         result[0]
     except IndexError:
-        print('FUUUUCK')
+        pass
     else:
         # Check to which key add new value
         if searchKey == 'underHeaderHeading':
             resultDict['mainUnderHeaderHeading'] = result[random.randint(0, len(result) - 1)]
         else:
             resultDict['mainUnderHeaderParagraph'] = result[random.randint(0, len(result) - 1)]
+
+
+def createMainContainer():
+    """
+     This function create random mainContainer content
+     And then add it to resultDict
+     """
+
+    searchKey = 'mainParagraph'
+
+    result = []
+    i = 0
+    # Add all founded values by searchKey to result[]
+    for key, value in websitesDict.items():
+        for subKey in websitesDict.get(key, {}):
+            if searchKey in str(subKey):
+                print(websitesDict[key]['City'])
+                # result.append(websitesDict[key][subKey])
+            else:
+                pass
+    # TODO: Catch texts and headings which repeat
+    #   Get current city and category to replace
+    # Catch empty array
+    # try:
+    #     result[0]
+    # except IndexError:
+    #     pass
+    # else:
+    #     # Check to which key add new value
+    #     if searchKey == 'underHeaderHeading':
+    #         resultDict['mainUnderHeaderHeading'] = result[random.randint(0, len(result) - 1)]
+    #     else:
+    #         resultDict['mainUnderHeaderParagraph'] = result[random.randint(0, len(result) - 1)]
+
+
+def testResult():
+    for key, value in resultDict.items():
+        print(str(key) + ' : ' + str(value) + '\n')
+
+
+def testWebsites():
+    for key, value in websitesDict.items():
+        print(str(key) + ' : ' + str(value) + '\n')
 
 
 if __name__ == '__main__':
