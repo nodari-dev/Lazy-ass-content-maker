@@ -15,9 +15,8 @@ websitesDict = {}
 resultDict = {}
 
 mainCity = 'TEST CITY'
-mainCategory = 'TEST CATEGORY'
 
-categoryList = ['wordpress', 'magento', 'shopify', 'development', 'design']
+categoryList = ['design', 'development', 'magento', 'shopify', 'wordpress']
 headContent = {
     'title':
         {
@@ -155,7 +154,6 @@ def getCityName(websiteProc):
         # Capitalize last word if length > 1
         if len(websiteCityCapitalize) > 1:
             websiteCityCapitalize[-1] = websiteCityCapitalize[-1].capitalize()
-            break
         websiteCity = ' '.join(websiteCityCapitalize)
 
     return websiteCity
@@ -264,7 +262,7 @@ def contentCreator():
     # Add city, category and specific title & meta
 
     # resultDict['city'] = cityName
-    # resultDict['mainCategory'] = 'CATEGORY'
+    # resultDict['mainCategory'] = categoryList[0]
     # resultDict['title'] = filterTitle(categoryList[1])
     # resultDict['meta'] = filterMeta(categoryList[1])
     # resultDict['headerHeading'] = filterHeaderHeading(categoryList[1])
@@ -276,8 +274,8 @@ def contentCreator():
     #     pass
     createMainContainer('mainParagraph')
 
-    testDict(websitesDict)
-    # testDict(resultDict)
+    # testDict(websitesDict)
+    testDict(resultDict)
 
 
 """
@@ -345,26 +343,34 @@ def createMainContainer(searchKey):
 
                 # TODO: set correct categories for websitesDict
                 if cityToReplace in paragraphToChange:
+                    # print('Replaced paragraph city')
                     paragraphToChange = paragraphToChange.replace(cityToReplace, mainCity)
-                    # print('PARAGRAPH = CITY')
-                elif categoryToReplace in paragraphToChange:
-                    paragraphToChange = paragraphToChange.replace(cityToReplace, mainCategory)
-                    # print('PARAGRAPH = CATEGORY')
-                # result.append(websitesDict[key][subKey])
+                if categoryToReplace in paragraphToChange:
+                    # print('Replaced paragraph category')
+                    paragraphToChange = paragraphToChange.replace(categoryToReplace, categoryList[1])
+
+                result.append(paragraphToChange)
             else:
                 pass
     # TODO: Catch texts and headings which repeat
     # Catch empty array
-    # try:
-    #     result[0]
-    # except IndexError:
-    #     pass
-    # else:
-    #     # Check to which key add new value
-    #     if searchKey == 'underHeaderHeading':
-    #         resultDict['mainUnderHeaderHeading'] = result[random.randint(0, len(result) - 1)]
-    #     else:
-    #         resultDict['mainUnderHeaderParagraph'] = result[random.randint(0, len(result) - 1)]
+    try:
+        result[0]
+    except IndexError:
+        pass
+    else:
+        # Check which category we use
+        resultParagraph = random.sample(result, 4)
+
+
+        for key, value in mainContainer.items():
+            if categoryList[1] == str(key):
+                i = 0
+                for subKey in mainContainer.get(key, {}):
+                    # Get random generated paragraph without repeating
+                    # Add all to resultDict
+                    resultDict[mainContainer[key][subKey]] = resultParagraph[i]
+                    i += 1
 
 
 def testDict(dict):
