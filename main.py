@@ -330,9 +330,15 @@ def createUnderHeader(searchKey):
         resultContent = random.sample(result, 1)
         # Check to which key add new value
         if searchKey == 'underHeaderHeading':
-            resultDict['mainUnderHeaderHeading'] = resultContent[0]
+            try:
+                resultDict['mainUnderHeaderHeading'] = resultContent[0]
+            except IndexError:
+                pass
         else:
-            resultDict['mainUnderHeaderParagraph'] = resultContent[0]
+            try:
+                resultDict['mainUnderHeaderParagraph'] = resultContent[0]
+            except IndexError:
+                pass
 
 
 def createMainContainer(searchKey):
