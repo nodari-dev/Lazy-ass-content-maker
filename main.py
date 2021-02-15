@@ -121,7 +121,7 @@ def contentGenerator():
             # Sort and add them to websiteDict
             getUnderHeader(websiteLink, websiteContent)
             getMainContainer(websiteLink, websiteContent)
-            getFooter(websiteLink, websiteContent)
+            getAboveFooter(websiteLink, websiteContent)
 
     finally:
         websitesFile.close()
@@ -223,7 +223,7 @@ def getMainContainer(linkProc, websiteProcContent):
             websitesDict[linkProc]['mainParagraph' + str(n)] = paragraph
 
 
-def getFooter(linkProc, websiteProcContent):
+def getAboveFooter(linkProc, websiteProcContent):
     """
     This function get heading and paragraph from div='abovefooter'
     Then write changes into websiteDict
@@ -249,7 +249,6 @@ def getFooter(linkProc, websiteProcContent):
                     websitesDict[linkProc]['footerParagraph' + str(n)] = paragraph
                     break
 
-
 def contentCreator():
     """
     This function add random and specific content do resultDict
@@ -258,20 +257,18 @@ def contentCreator():
     3: add random content to resultDict
     4: replace all keywords
     """
-    print('Generating result...')
-    # Add city, category and specific title & meta
 
-    # resultDict['city'] = cityName
-    # resultDict['mainCategory'] = categoryList[0]
-    # resultDict['title'] = filterTitle(categoryList[1])
-    # resultDict['meta'] = filterMeta(categoryList[1])
-    # resultDict['headerHeading'] = filterHeaderHeading(categoryList[1])
-    # resultDict['headerParagraph'] = filterHeaderParagraph(categoryList[1])
-    # if random.choice([True, False]):
-    createUnderHeader('underHeaderHeading')
-    createUnderHeader('underHeaderParagraph')
-    # else:
-    #     pass
+    resultDict['city'] = mainCity
+    resultDict['mainCategory'] = categoryList[0]
+    resultDict['title'] = filterTitle(categoryList[1])
+    resultDict['meta'] = filterMeta(categoryList[1])
+    resultDict['headerHeading'] = filterHeaderHeading(categoryList[1])
+    resultDict['headerParagraph'] = filterHeaderParagraph(categoryList[1])
+    if random.choice([True, False]):
+        createUnderHeader('underHeaderHeading')
+        createUnderHeader('underHeaderParagraph')
+    else:
+        pass
     createMainContainer('mainHeading')
     createMainContainer('mainParagraph')
 
@@ -370,7 +367,7 @@ def createMainContainer(searchKey):
             else:
                 pass
     # TODO: Catch texts and headings which repeat
-    # Catch empty array
+    # Catch empty a array
     try:
         result[0]
     except IndexError:
@@ -406,8 +403,12 @@ def testDict(dict):
     This function was created for checking dictionaries
     We will see what dictionary includes
     """
+    print("=================================RESULT=====================================")
     for key, value in dict.items():
         print(str(key) + ' : ' + str(value) + '\n')
+    print("=================================RESULT=====================================")
+
+
 
 def lenSubDict(dict):
     """
@@ -422,6 +423,7 @@ def lenSubDict(dict):
         for subKey in dict.get(key, {}):
             i += 1
     return i
+
 
 if __name__ == '__main__':
     contentGenerator()
