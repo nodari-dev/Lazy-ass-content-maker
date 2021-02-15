@@ -314,7 +314,6 @@ def createUnderHeader(searchKey):
                 contentToChange = contentToChange.replace(cityToReplace, mainCity)
                 # print(contentToChange)
                 result.append(contentToChange)
-                # TODO: set correct categories for websitesDict
             else:
                 pass
     # Catch empty array
@@ -361,12 +360,10 @@ def createMainContainer(searchKey):
                 else:
                     contentToChange = contentToChange.replace(cityToReplace, mainCity)
                     contentToChange = contentToChange.replace(categoryToReplace, categoryList[2].capitalize())
-                    # TODO: SET TWO FUNCTIONS - ONE FOR HEADINGS, SECOND FOR PARAGRAPHS
 
                 result.append(contentToChange)
             else:
                 pass
-    # TODO: Catch texts and headings which repeat
     # Catch empty a array
     try:
         result[0]
