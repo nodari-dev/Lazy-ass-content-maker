@@ -5,90 +5,16 @@ import presets
 
 # INPUT ARRAYS
 
-# Min name of cities for dict
-websitesCityList = []
-
-# Full names of cities
-websitesCityNames = []
 
 websitesDict = {}
 resultDict = {}
 
-mainCity = 'TEST CITY'
-
+citiesList = []
 categoryList = ['design', 'development', 'magento', 'shopify', 'wordpress']
-headContent = {
-    'title':
-        {
-            'design': '🥇 Web Design Agency in ' + mainCity + '. Web designers in ' + mainCity,
-            'development': '🥇 Web Development Agency in ' + mainCity + '. Web developers in ' + mainCity,
-            'magento': '🥇 Magento Web Development & eCommerce consulting agency in ' + mainCity,
-            'shopify': '🥇 Shopify Development Agency in ' + mainCity + '. Web developers in ' + mainCity,
-            'wordpress': '🥇 WordPress & WooCommerce Development Agency in ' + mainCity + '. Web developers in ' + mainCity
-        },
-    'meta':
-        {
-            'design': 'Web design agency in ' + mainCity + ' ✅ with full-stack front-end back-end developers in ' + mainCity + '⚡',
-            'development': 'Web development agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '⚡',
-            'magento': 'Magento agency in ' + mainCity + ' ✅ with certified developers and solution specialists ready to start today. ⚡We design, develop and support.',
-            'shopify': 'Shopify agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '.⚡',
-            'wordpress': 'WordPress & WooCommerce agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '. ⚡'
-        }
-}
 
-headerContent = {
-    "heading":
-        {
-            'design': 'Web design agency in <strong>' + mainCity + '</strong> with top-rated designers, developers, and marketing managers in <strong>' + mainCity + '</strong>',
-            'development': 'Web development agency in <strong>' + mainCity + '</strong> with top-rated full-stack developers',
-            'magento': 'Magento Agency in <strong>' + mainCity + '</strong>. Expert Magento Web Development in <strong>' + mainCity + '</strong>',
-            'shopify': 'Shopify development agency in <strong>' + mainCity + '</strong> with top-rated full-stack developers',
-            'wordpress': 'Wordpress &amp; WooCommerce development agency in <strong>' + mainCity + '</strong> with top-rated full-stack developers'
-        },
-    "paragraph":
-        {
-            'design': 'We provide full-stack developers in ' + mainCity + '. Our agency support clients around Manchester and surrounding areas',
-            'development': 'We provide full-stack development and support service in ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
-            'magento': 'We provide full-stack Magento development and support service in ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
-            'shopify': 'We provide full-stack Shopify development and support service ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
-            'wordpress': 'We provide full-stack Wordpress & WooCommerce developers in ' + mainCity + '. Our WordPress & WooCommerce agency support clients around ' + mainCity + ' and surrounding areas'
-        }
-}
 
-mainContainerHeadings = {
-    "design":
-        {
-            "headingOne": 'Give Your Competition a <strong>Run for Its Money</strong>',
-            "headingTwo": 'The MageCloud Web <strong>Web Design Difference</strong>'
-        },
-    "development":
-        {
-            "headingOne": 'Back-end <strong>Development</strong>',
-            "headingTwo": 'Front-end <strong>Development</strong>',
-            "headingThree": "Platform <strong>Integrations</strong>",
-            "headingFour": "Plugin <strong>Development</strong>"
-        },
-    "magento":
-        {
-            "headingOne": 'Your Magento Ecommerce <br> Development Partner in <strong>' + mainCity + '</strong>',
-            "headingTwo": 'Magento Ecommerce Design <br> in <strong>' + mainCity + '</strong>',
-            "headingThree": 'Creative Marketing Strategy for <br> Magento in <strong>' + mainCity + '</strong>'
-        },
-    "shopify":
-        {
-            "headingOne": 'Back-end <strong>Development</strong>',
-            "headingTwo": 'Front-end <strong>Development</strong>',
-            "headingThree": "Platform <strong>Integrations</strong>",
-            "headingFour": "Plugin <strong>Development</strong>"
-        },
-    "wordpress":
-        {
-            "headingOne": 'Back-end <strong>Development</strong>',
-            "headingTwo": 'Front-end <strong>Development</strong>',
-            "headingThree": "Platform <strong>Integrations</strong>",
-            "headingFour": "Plugin <strong>Development</strong>"
-        }
-}
+
+
 
 def contentGenerator():
     # TODO: in main function run this function with arguments 'Categories' and smth else...
@@ -98,6 +24,11 @@ def contentGenerator():
     Get names of cities from links
     Generate dict of links and cities
     """
+    getWebsitesFile()
+    getCitiesFile()
+
+
+def getWebsitesFile():
     try:
         websitesFile = open("websites.txt", "r")
     except NameError:
@@ -125,6 +56,18 @@ def contentGenerator():
 
     finally:
         websitesFile.close()
+
+
+def getCitiesFile():
+    try:
+        citiesFile = open("cities.txt", "r")
+    except NameError:
+        print('No file named "cities.txt"')
+    else:
+        for line in citiesFile:
+            cityName = line.strip()
+            citiesList.append(cityName)
+
 
 
 def getCityName(websiteProc):
@@ -249,7 +192,8 @@ def getAboveFooter(linkProc, websiteProcContent):
                     websitesDict[linkProc]['footerParagraph' + str(n)] = paragraph
                     break
 
-def contentCreator():
+
+def contentCreator(mainCity, mainCategory):
     """
     This function add random and specific content do resultDict
     1: we need to check City and Category of website we need to create
@@ -259,18 +203,18 @@ def contentCreator():
     """
 
     resultDict['city'] = mainCity
-    resultDict['mainCategory'] = categoryList[0]
-    resultDict['title'] = filterTitle(categoryList[1])
-    resultDict['meta'] = filterMeta(categoryList[1])
-    resultDict['headerHeading'] = filterHeaderHeading(categoryList[1])
-    resultDict['headerParagraph'] = filterHeaderParagraph(categoryList[1])
+    resultDict['mainCategory'] = mainCategory
+    resultDict['title'] = filterTitle(mainCity, mainCategory)
+    resultDict['meta'] = filterMeta(mainCity, mainCategory)
+    resultDict['headerHeading'] = filterHeaderHeading(mainCity, mainCategory)
+    resultDict['headerParagraph'] = filterHeaderParagraph(mainCity, mainCategory)
     if random.choice([True, False]):
-        createUnderHeader('underHeaderHeading')
-        createUnderHeader('underHeaderParagraph')
+        createUnderHeader('underHeaderHeading', mainCity, mainCategory)
+        createUnderHeader('underHeaderParagraph', mainCity, mainCategory)
     else:
         pass
-    createMainContainer('mainHeading')
-    createMainContainer('mainParagraph')
+    createMainContainer('mainHeading', mainCity, mainCategory)
+    createMainContainer('mainParagraph', mainCity, mainCategory)
 
     # testDict(websitesDict)
     testDict(resultDict)
@@ -281,21 +225,52 @@ These lambda functions select title and meta from category
 And return value to resultDict
 """
 
-filterTitle = lambda title: headContent['title'][title]
 
-filterMeta = lambda meta: headContent['meta'][meta]
-
-"""
-These lambda functions select heading and paragraph from headerContent
-And return value to resultDict
-"""
-
-filterHeaderHeading = lambda headerHeading: headerContent['heading'][headerHeading]
-
-filterHeaderParagraph = lambda headerHeading: headerContent['paragraph'][headerHeading]
+def filterTitle(mainCity, mainCategory):
+    titleDict = {
+        'design': '🥇 Web Design Agency in ' + mainCity + '. Web designers in ' + mainCity,
+        'development': '🥇 Web Development Agency in ' + mainCity + '. Web developers in ' + mainCity,
+        'magento': '🥇 Magento Web Development & eCommerce consulting agency in ' + mainCity,
+        'shopify': '🥇 Shopify Development Agency in ' + mainCity + '. Web developers in ' + mainCity,
+        'wordpress': '🥇 WordPress & WooCommerce Development Agency in ' + mainCity + '. Web developers in ' + mainCity
+    }
+    return titleDict[mainCategory]
 
 
-def createUnderHeader(searchKey):
+def filterMeta(mainCity, mainCategory):
+    metaDict = {
+        'design': 'Web design agency in ' + mainCity + ' ✅ with full-stack front-end back-end developers in ' + mainCity + '⚡',
+        'development': 'Web development agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '⚡',
+        'magento': 'Magento agency in ' + mainCity + ' ✅ with certified developers and solution specialists ready to start today. ⚡We design, develop and support.',
+        'shopify': 'Shopify agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '.⚡',
+        'wordpress': 'WordPress & WooCommerce agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '. ⚡'
+    }
+    return metaDict[mainCategory]
+
+
+def filterHeaderHeading(mainCity, mainCategory):
+    headerHeadingDict = {
+        'design': 'Web design agency in <strong>' + mainCity + '</strong> with top-rated designers, developers, and marketing managers in <strong>' + mainCity + '</strong>',
+        'development': 'Web development agency in <strong>' + mainCity + '</strong> with top-rated full-stack developers',
+        'magento': 'Magento Agency in <strong>' + mainCity + '</strong>. Expert Magento Web Development in <strong>' + mainCity + '</strong>',
+        'shopify': 'Shopify development agency in <strong>' + mainCity + '</strong> with top-rated full-stack developers',
+        'wordpress': 'Wordpress &amp; WooCommerce development agency in <strong>' + mainCity + '</strong> with top-rated full-stack developers'
+    }
+    return headerHeadingDict[mainCategory]
+
+
+def filterHeaderParagraph(mainCity, mainCategory):
+    headerParagraphDict = {
+        'design': 'We provide full-stack developers in ' + mainCity + '. Our agency support clients around Manchester and surrounding areas',
+        'development': 'We provide full-stack development and support service in ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
+        'magento': 'We provide full-stack Magento development and support service in ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
+        'shopify': 'We provide full-stack Shopify development and support service ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
+        'wordpress': 'We provide full-stack Wordpress & WooCommerce developers in ' + mainCity + '. Our WordPress & WooCommerce agency support clients around ' + mainCity + ' and surrounding areas'
+    }
+    return headerParagraphDict[mainCategory]
+
+
+def createUnderHeader(searchKey, mainCity, mainCategory):
     """
     This function create random underHeader content
     And then add it to resultDict
@@ -310,7 +285,7 @@ def createUnderHeader(searchKey):
                 categoryToReplace = str(websitesDict[key]['Category'])
                 contentToChange = str(websitesDict[key][subKey])
 
-                contentToChange = contentToChange.replace(categoryToReplace, categoryList[2].capitalize())
+                contentToChange = contentToChange.replace(categoryToReplace, mainCategory.capitalize())
                 contentToChange = contentToChange.replace(cityToReplace, mainCity)
                 # print(contentToChange)
                 result.append(contentToChange)
@@ -337,13 +312,47 @@ def createUnderHeader(searchKey):
                 pass
 
 
-def createMainContainer(searchKey):
+def createMainContainer(searchKey, mainCity, mainCategory):
     """
      This function create random mainContainer content
      And then add it to resultDict
      """
     result = []
     i = 0
+    mainContainerHeadings = {
+        "design":
+            {
+                "headingOne": 'Give Your Competition a <strong>Run for Its Money</strong>',
+                "headingTwo": 'The MageCloud Web <strong>Web Design Difference</strong>'
+            },
+        "development":
+            {
+                "headingOne": 'Back-end <strong>Development</strong>',
+                "headingTwo": 'Front-end <strong>Development</strong>',
+                "headingThree": "Platform <strong>Integrations</strong>",
+                "headingFour": "Plugin <strong>Development</strong>"
+            },
+        "magento":
+            {
+                "headingOne": 'Your Magento Ecommerce <br> Development Partner in <strong>' + mainCity + '</strong>',
+                "headingTwo": 'Magento Ecommerce Design <br> in <strong>' + mainCity + '</strong>',
+                "headingThree": 'Creative Marketing Strategy for <br> Magento in <strong>' + mainCity + '</strong>'
+            },
+        "shopify":
+            {
+                "headingOne": 'Back-end <strong>Development</strong>',
+                "headingTwo": 'Front-end <strong>Development</strong>',
+                "headingThree": "Platform <strong>Integrations</strong>",
+                "headingFour": "Plugin <strong>Development</strong>"
+            },
+        "wordpress":
+            {
+                "headingOne": 'Back-end <strong>Development</strong>',
+                "headingTwo": 'Front-end <strong>Development</strong>',
+                "headingThree": "Platform <strong>Integrations</strong>",
+                "headingFour": "Plugin <strong>Development</strong>"
+            }
+    }
     # Add all founded values by searchKey to result[]
     for key, value in websitesDict.items():
         for subKey in websitesDict.get(key, {}):
@@ -359,7 +368,7 @@ def createMainContainer(searchKey):
                     contentToChange = contentToChange.replace(cityToReplace, mainCity)
                 else:
                     contentToChange = contentToChange.replace(cityToReplace, mainCity)
-                    contentToChange = contentToChange.replace(categoryToReplace, categoryList[2].capitalize())
+                    contentToChange = contentToChange.replace(categoryToReplace, mainCategory.capitalize())
 
                 result.append(contentToChange)
             else:
@@ -423,11 +432,15 @@ def lenSubDict(dict):
 
 
 if __name__ == '__main__':
+    """
+    Here we run two main functions
+    contentGenerator() gets all data from links
+    And creates websitesDict which contains structured info
+    
+    Then we run two loops (all cities, all categories)
+    For every city we create 4 categories or 5 (optional: we need to edit in code)
+    """
     contentGenerator()
-    contentCreator()
-    # TODO: run in loop only contentCreator()
-    #   To get all content only one time
-
-    # CityList = [str(item) for item in input("Enter list of cities : ").split()]
-    # for city in CityList:
-    #     for category in CategoryList:
+    for city in citiesList:
+        for category in categoryList:
+            contentCreator(city, category)
