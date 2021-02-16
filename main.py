@@ -3,17 +3,12 @@ from bs4 import BeautifulSoup as bs
 import random
 import presets
 
-# INPUT ARRAYS
-
 
 websitesDict = {}
 resultDict = {}
 
 citiesList = []
 categoryList = ['design', 'development', 'magento', 'shopify', 'wordpress']
-
-
-
 
 
 def contentGenerator():
