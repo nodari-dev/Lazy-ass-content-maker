@@ -1,8 +1,9 @@
 import requests
 from bs4 import BeautifulSoup as bs
+from docx import Document
+import os
 import random
 import presets
-
 
 websitesDict = {}
 resultDict = {}
@@ -11,6 +12,11 @@ websitesList = []
 citiesList = []
 
 categoryList = ['design', 'development', 'magento', 'shopify', 'wordpress']
+
+# TODO: mainsubHeaderHeading ==> mainSubHeaderHeading
+# TODO: better filtering 'Wordpress or woocommerce' ==> 'New category'
+#   Find all keywords
+# TODO: Fix mainContainer data under subFooter content
 
 
 def getFile(lineName, procList):
@@ -198,6 +204,8 @@ def contentCreator(mainCity, mainCategory):
         createSubHeaderFooter('subFooterHeading', mainCity, mainCategory)
         createSubHeaderFooter('subFooterParagraph', mainCity, mainCategory)
 
+    print('Content for ' + mainCity + ' ' + mainCategory + " created")
+
 
 def filterTitle(mainCity, mainCategory):
     """
@@ -309,7 +317,7 @@ def createSubHeaderFooter(searchKey, mainCity, mainCategory):
         try:
             # We add searchKey to generate key 'mainSubHeader/Footer' with unique id
             resultDict['main' + searchKey] = resultContent[0]
-            # TODO: mainsubHeaderHeading ==> mainSubHeaderHeading
+
         except IndexError:
             print('Index error when creating subHeader')
             pass
@@ -326,7 +334,6 @@ def createMainContainer(searchKey, mainCity, mainCategory):
     :param searchKey:
     :param mainCity:
     :param mainCategory:
-    :return:
     """
     result = []
     i = 0
@@ -412,16 +419,49 @@ def createMainContainer(searchKey, mainCity, mainCategory):
                 i += 1
 
 
+def saveFile(mainCity, mainCategory):
+    """
+    This function does last step of content creating
 
-def testDict(dict):
+    1. In 'results' folder for every city we create folder
+    2. Folder will have the same name with the city
+
+    3. For every category file we add paragraphs and headings
+    4. And then we save file with name "City-category"
+
+    :param mainCity:
+    :param mainCategory:
+    :return:
     """
-    This function was created for checking dictionaries
-    We will see what dictionary includes
-    """
-    print("=================================RESULT=====================================")
-    for key, value in dict.items():
-        print(str(key) + ' : ' + str(value) + '\n')
-    print("=================================RESULT=====================================")
+
+    # Create folder and file with specific category
+    folder = 'results/' + mainCity
+    file = mainCity + '-' + mainCategory + '.docx'
+    try:
+        os.mkdir(folder)
+    except OSError:
+        print("Creation of the directory %s failed" % folder)
+    else:
+        print("Successfully created the directory %s " % folder)
+
+    # Initialize document
+    document = Document()
+
+    # Add main headings, paragraphs, title and meta
+    document.add_heading(mainCity + ' ' + mainCategory.capitalize(), 0)
+    title = document.add_paragraph(resultDict['title'])
+    meta = document.add_paragraph(resultDict['meta'])
+
+    # From resultDict we get all content
+    for key, value in resultDict.items():
+        if 'Heading' in str(key):
+            p = document.add_paragraph(resultDict[key])
+        elif 'Paragraph' in str(key):
+            p = document.add_paragraph(resultDict[key])
+
+    document.add_page_break()
+    # Save document in specific folder
+    document.save(folder + '/' + file)
 
 
 if __name__ == '__main__':
@@ -435,9 +475,8 @@ if __name__ == '__main__':
     """
     getFile('websites.txt', websitesList)
     getFile('cities.txt', citiesList)
-    # parseWebsites()
-    # for city in citiesList:
-    #     for category in categoryList:
-    #         contentCreator(city, category)
-    # testDict(websitesDict)
-    testDict(resultDict)
+    parseWebsites()
+    for city in citiesList:
+        for category in categoryList:
+            contentCreator(city, category)
+            saveFile(city, category)
