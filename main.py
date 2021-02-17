@@ -7,62 +7,73 @@ import presets
 websitesDict = {}
 resultDict = {}
 
+websitesList = []
 citiesList = []
-# categoryList = ['design', 'development', 'magento', 'shopify', 'wordpress']
-categoryList = ['shopify']
 
-
-def contentGenerator():
-    # TODO: in main function run this function with arguments 'Categories' and smth else...
-    #  Solve problem with categories and text replacement (design, dev) => KEYWORDS
-    """
-    This function gets links from txt file
-    Get names of cities from links
-    Generate dict of links and cities
-    """
-    getWebsitesFile()
-    getCitiesFile()
+categoryList = ['design', 'development', 'magento', 'shopify', 'wordpress']
+# categoryList = ['shopify']
 
 
 def getWebsitesFile():
+    """
+    This function get all links from websites.txt
+    Then adds all to websiteList
+    """
     try:
         websitesFile = open("websites.txt", "r")
     except NameError:
         print('No file named "websites.txt"')
     else:
-        for line in websitesFile:
-            websiteLink = line.strip()
-
-            # Parse all HTML page
-            page = requests.get(websiteLink)
-            websiteContent = bs(page.content, 'html.parser')
-            # Write all changes to dictionary
-
-            websitesDict[websiteLink] = {
-                "City": getCityName(websiteLink),
-                "Category": getCategory(websiteLink),
-            }
-
-            # We use these functions to get all content from pages
-            # Sort and add them to websiteDict
-            getSubHeaderFooter('subHeader', websiteLink, websiteContent)
-            getMainContainer(websiteLink, websiteContent)
-            getSubHeaderFooter('subFooter', websiteLink, websiteContent)
-
+        for link in websitesFile:
+            websiteLink = link.strip()
+            websitesList.append(websiteLink)
     finally:
         websitesFile.close()
 
 
 def getCitiesFile():
+    """
+    This function get all cities from cities.txt
+    Then adds all to citiesList
+    """
     try:
         citiesFile = open("cities.txt", "r")
     except NameError:
         print('No file named "cities.txt"')
     else:
-        for line in citiesFile:
-            cityName = line.strip()
+        for city in citiesFile:
+            cityName = city.strip()
             citiesList.append(cityName)
+    finally:
+        citiesFile.close()
 
+
+def parseWebsites():
+    """
+    This function parse all websites
+    1. We parse all HTML PAGE, all page in variable 'website'
+    2. We run getCityName(website) to return name of city
+    3. Then we run getCategory(website) to return category
+    4. Then we get underHeader (subHeader)
+    5. Then we get above-footer (subFooter)
+    """
+    for website in websitesList:
+        print(website)
+        # Parse all HTML page
+        page = requests.get(website)
+        websiteContent = bs(page.content, 'html.parser')
+        # Write all changes to dictionary
+
+        websitesDict[website] = {
+            "City": getCityName(website),
+            "Category": getCategory(website),
+        }
+
+        # We use these functions to get all content from pages
+        # Sort and add them to websiteDict
+        getSubHeaderFooter('subHeader', website, websiteContent)
+        getMainContainer(website, websiteContent)
+        getSubHeaderFooter('subFooter', website, websiteContent)
 
 
 def getCityName(websiteProc):
@@ -70,6 +81,8 @@ def getCityName(websiteProc):
     This function get city name from link
     First we need to remove chars for presets.checks
     Then clean text and set correct capitalize
+
+    :param websiteProc
     """
     websitesCity = str(websiteProc)
 
@@ -100,6 +113,8 @@ def getCityName(websiteProc):
 def getCategory(websiteProc):
     """
     This function identifying category from each link
+
+    :param websiteProc
     """
     for key, category in presets.categoryDict.items():
         if key in websiteProc:
@@ -107,16 +122,25 @@ def getCategory(websiteProc):
             break
 
 
-def getSubHeaderFooter(procKey ,linkProc, websiteProcContent):
+def getSubHeaderFooter(procKey, linkProc, websiteProcContent):
     """
-    This function get heading and paragraph from div='underheader'
+    This function get heading and paragraph from div`s 'underheader' and 'above-footer'
     Then write changes into websiteDict
+
+    :param procKey:
+    :param linkProc:
+    :param websiteProcContent
     """
-    elements = websiteProcContent.find_all('div', class_='container_full underheader')
+    # Check which block we need to get
+    if 'Header' in procKey:
+        elements = websiteProcContent.find_all('div', class_='container_full underheader')
+    else:
+        elements = websiteProcContent.find_all('div', class_='container_full above-footer')
     try:
         elements[0]
+        # Catch error if block does not exist
     except IndexError:
-        print('No block named underheader')
+        print("Didn't find " + procKey)
     else:
         if len(elements) != 0:
             for textEl in elements:
@@ -125,12 +149,14 @@ def getSubHeaderFooter(procKey ,linkProc, websiteProcContent):
                     heading = textEl.text
                     # 'n' variable is a count of found elements with same type
                     for n, element in enumerate(elements, start=0):
+                        # We use procKey to create full correct key [subHeaderHeading]
                         websitesDict[linkProc][procKey + 'Heading' + str(n)] = heading
                         break
                 else:
                     # First we get <p> text and if exist such element
                     paragraph = textEl.text
                     for n, element in enumerate(elements, start=0):
+                        # We use procKey to create full correct key [subHeaderParagraph]
                         websitesDict[linkProc][procKey + 'Paragraph' + str(n)] = paragraph
                         break
 
@@ -140,19 +166,21 @@ def getMainContainer(linkProc, websiteProcContent):
     This function gets all headings and paragraphs
     from <div class="main-container-landing">
     And write them into websitesDict
+
+    :param linkProc:
+    :param websiteProcContent:
     """
     elements = websiteProcContent.find_all('div', class_='main-container-landing')
     try:
         elements[0]
     except NameError:
+        # Catch error if block does not exist
         print('No div with class "main-container-landing"')
     else:
         # 'n' variable is a count of found elements with same type
         for n, element in enumerate(elements, start=0):
             # here we find paragraph
             paragraph = element.find('p').text
-
-            # to see if they are in one block
             websitesDict[linkProc]['mainParagraph' + str(n)] = paragraph
 
 
@@ -162,7 +190,10 @@ def contentCreator(mainCity, mainCategory):
     1: we need to check City and Category of website we need to create
     2: select by City and Category <title> and <meta>
     3: add random content to resultDict
-    4: replace all keywords
+
+    NOTE: every function replace city and category to return final text
+    :param mainCity:
+    :param mainCategory:
     """
     #
     resultDict['city'] = mainCity
@@ -171,27 +202,30 @@ def contentCreator(mainCity, mainCategory):
     resultDict['meta'] = filterMeta(mainCity, mainCategory)
     resultDict['headerHeading'] = filterHeaderHeading(mainCity, mainCategory)
     resultDict['headerParagraph'] = filterHeaderParagraph(mainCity, mainCategory)
+    # Some pages will not have these blocks
     if random.choice([True, False]):
         createSubHeaderFooter('subHeaderHeading', mainCity, mainCategory)
         createSubHeaderFooter('subHeaderParagraph', mainCity, mainCategory)
-    else:
-        pass
+
     createMainContainer('mainParagraph', mainCity, mainCategory)
 
+    # Some pages will not have these blocks
     if random.choice([True, False]):
         createSubHeaderFooter('subFooterHeading', mainCity, mainCategory)
         createSubHeaderFooter('subFooterParagraph', mainCity, mainCategory)
-    # testDict(websitesDict)
-    testDict(resultDict)
 
-
-"""
-These lambda functions select title and meta from category
-And return value to resultDict
-"""
 
 
 def filterTitle(mainCity, mainCategory):
+    """
+    This function returns correct title with name of city
+    It combines mainCategory with titleDict keys and founds similar keys
+
+    :param mainCity:
+    :param mainCategory:
+    :return: titleDict[mainCategory]
+    """
+
     titleDict = {
         'design': '🥇 Web Design Agency in ' + mainCity + '. Web designers in ' + mainCity,
         'development': '🥇 Web Development Agency in ' + mainCity + '. Web developers in ' + mainCity,
@@ -203,6 +237,15 @@ def filterTitle(mainCity, mainCategory):
 
 
 def filterMeta(mainCity, mainCategory):
+    """
+    This function returns correct meta with name of city
+    It combines mainCategory with metaDict keys and founds similar keys
+
+    :param mainCity:
+    :param mainCategory:
+    :return: metaDict[mainCategory]
+    """
+
     metaDict = {
         'design': 'Web design agency in ' + mainCity + ' ✅ with full-stack front-end back-end developers in ' + mainCity + '⚡',
         'development': 'Web development agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '⚡',
@@ -214,6 +257,14 @@ def filterMeta(mainCity, mainCategory):
 
 
 def filterHeaderHeading(mainCity, mainCategory):
+    """
+    This function returns correct Header heading with name of city
+    It combines mainCategory with headerHeadingDict keys and founds similar keys
+
+    :param mainCity:
+    :param mainCategory:
+    :return: metaDict[mainCategory]
+    """
     headerHeadingDict = {
         'design': 'Web design agency in <strong>' + mainCity + '</strong> with top-rated designers, developers, and marketing managers in <strong>' + mainCity + '</strong>',
         'development': 'Web development agency in <strong>' + mainCity + '</strong> with top-rated full-stack developers',
@@ -225,6 +276,14 @@ def filterHeaderHeading(mainCity, mainCategory):
 
 
 def filterHeaderParagraph(mainCity, mainCategory):
+    """
+    This function returns correct Header paragraphs with name of city
+    It combines mainCategory with headerParagraphDict keys and founds similar keys
+
+    :param mainCity:
+    :param mainCategory:
+    :return: metaDict[mainCategory]
+    """
     headerParagraphDict = {
         'design': 'We provide full-stack developers in ' + mainCity + '. Our agency support clients around Manchester and surrounding areas',
         'development': 'We provide full-stack development and support service in ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
@@ -237,22 +296,22 @@ def filterHeaderParagraph(mainCity, mainCategory):
 
 def createSubHeaderFooter(searchKey, mainCity, mainCategory):
     """
-    This function create random underHeader content
+    This function create random 'underheader' and 'above-footer' content
     And then add it to resultDict
     """
     result = []
     # Add all founded values by searchKey to result[]
     for key, value in websitesDict.items():
         for subKey in websitesDict.get(key, {}):
-
+            # Check if in websitesDict key with similar text exist
             if searchKey in str(subKey):
                 cityToReplace = str(websitesDict[key]['City'])
                 categoryToReplace = str(websitesDict[key]['Category'])
                 contentToChange = str(websitesDict[key][subKey])
 
+                # Here we replace city and category in text
                 contentToChange = contentToChange.replace(categoryToReplace, mainCategory.capitalize())
                 contentToChange = contentToChange.replace(cityToReplace, mainCity)
-                # print(contentToChange)
                 result.append(contentToChange)
             else:
                 pass
@@ -264,9 +323,8 @@ def createSubHeaderFooter(searchKey, mainCity, mainCategory):
     else:
         # Get one random text from array without repeating
         resultContent = random.sample(result, 1)
-        # Check to which key add new value
-
         try:
+            # We add searchKey to generate key 'mainSubHeader/Footer' with unique id
             resultDict['main' + searchKey] = resultContent[0]
             # TODO: mainsubHeaderHeading ==> mainSubHeaderHeading
         except IndexError:
@@ -276,9 +334,17 @@ def createSubHeaderFooter(searchKey, mainCity, mainCategory):
 
 def createMainContainer(searchKey, mainCity, mainCategory):
     """
-     This function create random mainContainer content
-     And then add it to resultDict
-     """
+    This function creates 'mainContainer' content
+    1. We find all text what we needed
+    2. Replace city and category
+    3. Find correct heading to each category
+    4. Add to resultDict
+
+    :param searchKey:
+    :param mainCity:
+    :param mainCategory:
+    :return:
+    """
     result = []
     i = 0
     mainContainerHeadings = {
@@ -384,7 +450,11 @@ if __name__ == '__main__':
     Then we run two loops (all cities, all categories)
     For every city we create 4 categories or 5 (optional: we need to edit in code)
     """
-    contentGenerator()
+    getWebsitesFile()
+    getCitiesFile()
+    parseWebsites()
     for city in citiesList:
         for category in categoryList:
             contentCreator(city, category)
+    # testDict(websitesDict)
+    testDict(resultDict)
