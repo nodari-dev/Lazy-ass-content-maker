@@ -8,7 +8,8 @@ websitesDict = {}
 resultDict = {}
 
 citiesList = []
-categoryList = ['design', 'development', 'magento', 'shopify', 'wordpress']
+# categoryList = ['design', 'development', 'magento', 'shopify', 'wordpress']
+categoryList = ['shopify']
 
 
 def contentGenerator():
@@ -35,7 +36,6 @@ def getWebsitesFile():
             # Parse all HTML page
             page = requests.get(websiteLink)
             websiteContent = bs(page.content, 'html.parser')
-
             # Write all changes to dictionary
 
             websitesDict[websiteLink] = {
@@ -45,9 +45,9 @@ def getWebsitesFile():
 
             # We use these functions to get all content from pages
             # Sort and add them to websiteDict
-            getUnderHeader(websiteLink, websiteContent)
+            getSubHeaderFooter('subHeader', websiteLink, websiteContent)
             getMainContainer(websiteLink, websiteContent)
-            getAboveFooter(websiteLink, websiteContent)
+            getSubHeaderFooter('subFooter', websiteLink, websiteContent)
 
     finally:
         websitesFile.close()
@@ -107,7 +107,7 @@ def getCategory(websiteProc):
             break
 
 
-def getUnderHeader(linkProc, websiteProcContent):
+def getSubHeaderFooter(procKey ,linkProc, websiteProcContent):
     """
     This function get heading and paragraph from div='underheader'
     Then write changes into websiteDict
@@ -125,13 +125,13 @@ def getUnderHeader(linkProc, websiteProcContent):
                     heading = textEl.text
                     # 'n' variable is a count of found elements with same type
                     for n, element in enumerate(elements, start=0):
-                        websitesDict[linkProc]['underHeaderHeading' + str(n)] = heading
+                        websitesDict[linkProc][procKey + 'Heading' + str(n)] = heading
                         break
                 else:
                     # First we get <p> text and if exist such element
                     paragraph = textEl.text
                     for n, element in enumerate(elements, start=0):
-                        websitesDict[linkProc]['underHeaderParagraph' + str(n)] = paragraph
+                        websitesDict[linkProc][procKey + 'Paragraph' + str(n)] = paragraph
                         break
 
 
@@ -149,43 +149,11 @@ def getMainContainer(linkProc, websiteProcContent):
     else:
         # 'n' variable is a count of found elements with same type
         for n, element in enumerate(elements, start=0):
-            # here we find heading
-            heading = element.find('h2').text
-
             # here we find paragraph
             paragraph = element.find('p').text
 
-            # we write every heading and paragraph into websiteDict with special number
             # to see if they are in one block
-            websitesDict[linkProc]['mainHeading' + str(n)] = heading
             websitesDict[linkProc]['mainParagraph' + str(n)] = paragraph
-
-
-def getAboveFooter(linkProc, websiteProcContent):
-    """
-    This function get heading and paragraph from div='abovefooter'
-    Then write changes into websiteDict
-    """
-    elements = websiteProcContent.find_all('div', class_='container_full above-footer')
-    try:
-        elements[0]
-    except IndexError:
-        print('No block named "above-footer"')
-    else:
-        for textEl in elements:
-            if 'h2' in str(textEl):
-                # First we get <h2> text and if exist such element
-                heading = textEl.text
-                # 'n' variable is a count of found elements with same type
-                for n, element in enumerate(elements, start=0):
-                    websitesDict[linkProc]['footerHeading' + str(n)] = heading
-                    break
-            else:
-                # First we get <p> text and if exist such element
-                paragraph = textEl.text
-                for n, element in enumerate(elements, start=0):
-                    websitesDict[linkProc]['footerParagraph' + str(n)] = paragraph
-                    break
 
 
 def contentCreator(mainCity, mainCategory):
@@ -196,7 +164,7 @@ def contentCreator(mainCity, mainCategory):
     3: add random content to resultDict
     4: replace all keywords
     """
-
+    #
     resultDict['city'] = mainCity
     resultDict['mainCategory'] = mainCategory
     resultDict['title'] = filterTitle(mainCity, mainCategory)
@@ -204,13 +172,15 @@ def contentCreator(mainCity, mainCategory):
     resultDict['headerHeading'] = filterHeaderHeading(mainCity, mainCategory)
     resultDict['headerParagraph'] = filterHeaderParagraph(mainCity, mainCategory)
     if random.choice([True, False]):
-        createUnderHeader('underHeaderHeading', mainCity, mainCategory)
-        createUnderHeader('underHeaderParagraph', mainCity, mainCategory)
+        createSubHeaderFooter('subHeaderHeading', mainCity, mainCategory)
+        createSubHeaderFooter('subHeaderParagraph', mainCity, mainCategory)
     else:
         pass
-    createMainContainer('mainHeading', mainCity, mainCategory)
     createMainContainer('mainParagraph', mainCity, mainCategory)
 
+    if random.choice([True, False]):
+        createSubHeaderFooter('subFooterHeading', mainCity, mainCategory)
+        createSubHeaderFooter('subFooterParagraph', mainCity, mainCategory)
     # testDict(websitesDict)
     testDict(resultDict)
 
@@ -265,7 +235,7 @@ def filterHeaderParagraph(mainCity, mainCategory):
     return headerParagraphDict[mainCategory]
 
 
-def createUnderHeader(searchKey, mainCity, mainCategory):
+def createSubHeaderFooter(searchKey, mainCity, mainCategory):
     """
     This function create random underHeader content
     And then add it to resultDict
@@ -295,16 +265,13 @@ def createUnderHeader(searchKey, mainCity, mainCategory):
         # Get one random text from array without repeating
         resultContent = random.sample(result, 1)
         # Check to which key add new value
-        if searchKey == 'underHeaderHeading':
-            try:
-                resultDict['mainUnderHeaderHeading'] = resultContent[0]
-            except IndexError:
-                pass
-        else:
-            try:
-                resultDict['mainUnderHeaderParagraph'] = resultContent[0]
-            except IndexError:
-                pass
+
+        try:
+            resultDict['main' + searchKey] = resultContent[0]
+            # TODO: mainsubHeaderHeading ==> mainSubHeaderHeading
+        except IndexError:
+            print('Index error when creating subHeader')
+            pass
 
 
 def createMainContainer(searchKey, mainCity, mainCategory):
@@ -350,6 +317,7 @@ def createMainContainer(searchKey, mainCity, mainCategory):
     }
     # Add all founded values by searchKey to result[]
     for key, value in websitesDict.items():
+        # Here we need to get only mainParagraphs
         for subKey in websitesDict.get(key, {}):
             if searchKey in str(subKey):
                 # Here we get current city name and category
@@ -359,44 +327,41 @@ def createMainContainer(searchKey, mainCity, mainCategory):
                 categoryToReplace = str(websitesDict[key]['Category'])
                 contentToChange = str(websitesDict[key][subKey])
 
-                if searchKey == 'mainHeading':
-                    contentToChange = contentToChange.replace(cityToReplace, mainCity)
-                else:
-                    contentToChange = contentToChange.replace(cityToReplace, mainCity)
-                    contentToChange = contentToChange.replace(categoryToReplace, mainCategory.capitalize())
+                # Here we edit all paragraph so we need to change city and category
+                contentToChange = contentToChange.replace(cityToReplace, mainCity)
+                contentToChange = contentToChange.replace(categoryToReplace, mainCategory.capitalize())
 
                 result.append(contentToChange)
-            else:
-                pass
     # Catch empty a array
     try:
         result[0]
     except IndexError:
+        print('createMainContainer index error')
         pass
     else:
         # We need to check len of result list
         # And if len is more than 4 -> max number will be 4
-        if len(result) > lenSubDict(mainContainerHeadings):
+        if len(result) > len(mainContainerHeadings[mainCategory]):
             resultParagraph = random.sample(result, 4)
         else:
             resultParagraph = random.sample(result, len(result))
 
         # Here we filter all data in loop
         # And add text to correct resultDict[key] + i (id for key)
-        for i in range(lenSubDict(mainContainerHeadings)):
-            for key, value in mainContainerHeadings.items():
-                for subKey in mainContainerHeadings.get(key, {}):
-                    # Here we check to which key we will add selected data
-                    # We are checking by searchKey
-                    if searchKey == 'mainHeading':
-                        resultDict['mainContainerHeading' + str(i)] = mainContainerHeadings[key][subKey]
-                    else:
-                        # If number on paragraphs is less than number of headings
-                        # We will catch an error and pass it
-                        try:
-                            resultDict['mainContainerParagraph' + str(i)] = resultParagraph[i]
-                        except IndexError:
-                            pass
+        i = 0
+        for key, value in mainContainerHeadings[mainCategory].items():
+            # Here we check to which key we will add selected data
+            # We are checking by searchKey
+            try:
+                resultDict['mainContainerHeading' + str(i)] = mainContainerHeadings[mainCategory][key]
+                resultDict['mainContainerParagraph' + str(i)] = resultParagraph[i]
+            # We need to check if size
+            except IndexError:
+                pass
+                break
+            else:
+                i += 1
+
 
 
 def testDict(dict):
@@ -408,22 +373,6 @@ def testDict(dict):
     for key, value in dict.items():
         print(str(key) + ' : ' + str(value) + '\n')
     print("=================================RESULT=====================================")
-
-
-
-def lenSubDict(dict):
-    """
-    This function we use to check len of sub dicts
-    In our solution, the main role of this func
-    To check how many paragraphs we need get to combine them
-    With headings from mainContainerHeadings
-    """
-
-    for key, value in dict.items():
-        i = 0
-        for subKey in dict.get(key, {}):
-            i += 1
-    return i
 
 
 if __name__ == '__main__':
