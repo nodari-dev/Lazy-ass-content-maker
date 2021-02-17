@@ -199,7 +199,6 @@ def contentCreator(mainCity, mainCategory):
         createSubHeaderFooter('subFooterParagraph', mainCity, mainCategory)
 
 
-
 def filterTitle(mainCity, mainCategory):
     """
     This function returns correct title with name of city
@@ -432,7 +431,7 @@ if __name__ == '__main__':
     And creates websitesDict which contains structured info
     
     Then we run two loops (all cities, all categories)
-    For every city we create 4 categories or 5 (optional: we need to edit in code)
+    For every city we create 5
     """
     getFile('websites.txt', websitesList)
     getFile('cities.txt', citiesList)
