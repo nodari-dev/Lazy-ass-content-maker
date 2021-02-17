@@ -11,41 +11,25 @@ websitesList = []
 citiesList = []
 
 categoryList = ['design', 'development', 'magento', 'shopify', 'wordpress']
-# categoryList = ['shopify']
 
 
-def getWebsitesFile():
+def getFile(lineName, procList):
     """
-    This function get all links from websites.txt
-    Then adds all to websiteList
-    """
-    try:
-        websitesFile = open("websites.txt", "r")
-    except NameError:
-        print('No file named "websites.txt"')
-    else:
-        for link in websitesFile:
-            websiteLink = link.strip()
-            websitesList.append(websiteLink)
-    finally:
-        websitesFile.close()
-
-
-def getCitiesFile():
-    """
-    This function get all cities from cities.txt
-    Then adds all to citiesList
+    This function opens txt file
+    Then add every line to array we will work with
+    :param lineName:
+    :param procList:
     """
     try:
-        citiesFile = open("cities.txt", "r")
+        openedFile = open(lineName, "r")
     except NameError:
-        print('No file named "cities.txt"')
+        print('No file named ' + lineName)
     else:
-        for city in citiesFile:
-            cityName = city.strip()
-            citiesList.append(cityName)
+        for line in openedFile:
+            lineElement = line.strip()
+            procList.append(lineElement)
     finally:
-        citiesFile.close()
+        openedFile.close()
 
 
 def parseWebsites():
@@ -450,11 +434,11 @@ if __name__ == '__main__':
     Then we run two loops (all cities, all categories)
     For every city we create 4 categories or 5 (optional: we need to edit in code)
     """
-    getWebsitesFile()
-    getCitiesFile()
-    parseWebsites()
-    for city in citiesList:
-        for category in categoryList:
-            contentCreator(city, category)
+    getFile('websites.txt', websitesList)
+    getFile('cities.txt', citiesList)
+    # parseWebsites()
+    # for city in citiesList:
+    #     for category in categoryList:
+    #         contentCreator(city, category)
     # testDict(websitesDict)
     testDict(resultDict)
