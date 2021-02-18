@@ -1,9 +1,11 @@
 
+categoryList = []
 categoryDict = {
     'website-development': 'Development',
     'website-design': 'Design',
     'magento-agency': 'Magento',
     'wordpress-woocommerce-development-agency': 'WordPress or WooCommerce',
+    'wordpress-woocommerce-development-agency-optional': 'Wordpress or WooCommerce',
     'shopify-development-agency': 'Shopify'
 }
 

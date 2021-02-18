@@ -12,14 +12,14 @@ resultDict = {}
 websitesList = []
 citiesList = []
 
-categoryList = ['design', 'development', 'shopify', 'wordpress']
+# categoryList = ['design', 'development', 'shopify', 'wordpress']
+categoryList = ['development']
 
-
-# TODO: mainsubHeaderHeading ==> mainSubHeaderHeading
 # TODO: better filtering 'Wordpress or woocommerce' ==> 'New category'
 #   Find all keywords
 # TODO: Fix mainContainer data under subFooter content
 # TODO: According to heading add words to paragraph FRONT-END DEVELOPMENT
+
 
 def getFile(lineName, procList):
     """
@@ -302,6 +302,13 @@ def createSubHeaderFooter(searchKey, mainCity, mainCategory):
                 categoryToReplace = str(websitesDict[key]['Category'])
                 contentToChange = str(websitesDict[key][subKey])
 
+                # Additional keys
+                for catKey, catValue in presets.categoryDict.items():
+                    if str(presets.categoryDict[catKey]) in contentToChange:
+                        contentToChange = contentToChange.replace(str(presets.categoryDict[catKey]), mainCategory)
+                    else:
+                        pass
+
                 # Here we replace city and category in text
                 contentToChange = contentToChange.replace(categoryToReplace, mainCategory.capitalize())
                 contentToChange = contentToChange.replace(cityToReplace, mainCity)
@@ -385,6 +392,12 @@ def createMainContainer(searchKey, mainCity, mainCategory):
                 categoryToReplace = str(websitesDict[key]['Category'])
                 contentToChange = str(websitesDict[key][subKey])
 
+                # Additional keys
+                for catKey, catValue in presets.categoryDict.items():
+                    if str(presets.categoryDict[catKey]) in contentToChange:
+                        contentToChange = contentToChange.replace(str(presets.categoryDict[catKey]), mainCategory)
+                    else:
+                        pass
                 # Here we edit all paragraph so we need to change city and category
                 contentToChange = contentToChange.replace(cityToReplace, mainCity)
                 contentToChange = contentToChange.replace(categoryToReplace, mainCategory.capitalize())
@@ -481,4 +494,4 @@ if __name__ == '__main__':
     for city in citiesList:
         for category in categoryList:
             contentCreator(city, category)
-            # saveFile(city, category)
+            saveFile(city, category)
