@@ -1,9 +1,10 @@
+import random
+import presets
 import requests
 from bs4 import BeautifulSoup as bs
 from docx import Document
 import os
-import random
-import presets
+
 
 websitesDict = {}
 resultDict = {}
@@ -11,13 +12,14 @@ resultDict = {}
 websitesList = []
 citiesList = []
 
-categoryList = ['design', 'development', 'magento', 'shopify', 'wordpress']
+categoryList = ['design', 'development', 'shopify', 'wordpress']
+
 
 # TODO: mainsubHeaderHeading ==> mainSubHeaderHeading
 # TODO: better filtering 'Wordpress or woocommerce' ==> 'New category'
 #   Find all keywords
 # TODO: Fix mainContainer data under subFooter content
-
+# TODO: According to heading add words to paragraph FRONT-END DEVELOPMENT
 
 def getFile(lineName, procList):
     """
@@ -130,7 +132,7 @@ def getSubHeaderFooter(procKey, linkProc, websiteProcContent):
         elements[0]
         # Catch error if block does not exist
     except IndexError:
-        print("Didn't find " + procKey)
+        pass
     else:
         if len(elements) != 0:
             for textEl in elements:
@@ -204,7 +206,7 @@ def contentCreator(mainCity, mainCategory):
         createSubHeaderFooter('subFooterHeading', mainCity, mainCategory)
         createSubHeaderFooter('subFooterParagraph', mainCity, mainCategory)
 
-    print('Content for ' + mainCity + ' ' + mainCategory + " created")
+    print('=> Content for ' + mainCity.upper() + ' ' + mainCategory.upper() + " created")
 
 
 def filterTitle(mainCity, mainCategory):
@@ -239,10 +241,10 @@ def filterMeta(mainCity, mainCategory):
 
     metaDict = {
         'design': 'Web design agency in ' + mainCity + ' ✅ with full-stack front-end back-end developers in ' + mainCity + '⚡',
-        'development': 'Web development agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '⚡',
+        'development': 'Web development agency in ' + mainCity + ' ✅ with full-stack front-end back-end developers in ' + mainCity + '⚡',
         'magento': 'Magento agency in ' + mainCity + ' ✅ with certified developers and solution specialists ready to start today. ⚡We design, develop and support.',
-        'shopify': 'Shopify agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '.⚡',
-        'wordpress': 'WordPress & WooCommerce agency in ' + mainCity + ' ✅ with full-stack frontend backend developers in ' + mainCity + '. ⚡'
+        'shopify': 'Shopify agency in ' + mainCity + ' ✅ with full-stack front-end back-end developers in ' + mainCity + '.⚡',
+        'wordpress': 'WordPress & WooCommerce agency in ' + mainCity + ' ✅ with full-stack front-end back-end developers in ' + mainCity + '. ⚡'
     }
     return metaDict[mainCategory]
 
@@ -319,7 +321,7 @@ def createSubHeaderFooter(searchKey, mainCity, mainCategory):
             resultDict['main' + searchKey] = resultContent[0]
 
         except IndexError:
-            print('Index error when creating subHeader')
+            print('Index error when creating subHeader >' + mainCity.upper() + ' ' + mainCategory.upper())
             pass
 
 
@@ -340,35 +342,35 @@ def createMainContainer(searchKey, mainCity, mainCategory):
     mainContainerHeadings = {
         "design":
             {
-                "headingOne": 'Give Your Competition a <strong>Run for Its Money</strong>',
-                "headingTwo": 'The MageCloud Web <strong>Web Design Difference</strong>'
+                "Competition": 'Give Your Competition a <strong>Run for Its Money</strong>',
+                "Design": 'The MageCloud Web <strong>Web Design Difference</strong>'
             },
         "development":
             {
-                "headingOne": 'Back-end <strong>Development</strong>',
-                "headingTwo": 'Front-end <strong>Development</strong>',
-                "headingThree": "Platform <strong>Integrations</strong>",
-                "headingFour": "Plugin <strong>Development</strong>"
+                "Back-end": 'Back-end <strong>Development</strong>',
+                "Front-end": 'Front-end <strong>Development</strong>',
+                "Platform": "Platform <strong>Integrations</strong>",
+                "Plugin": "Plugin <strong>Development</strong>"
             },
         "magento":
             {
-                "headingOne": 'Your Magento Ecommerce <br> Development Partner in <strong>' + mainCity + '</strong>',
-                "headingTwo": 'Magento Ecommerce Design <br> in <strong>' + mainCity + '</strong>',
-                "headingThree": 'Creative Marketing Strategy for <br> Magento in <strong>' + mainCity + '</strong>'
+                "Development": 'Your Magento Ecommerce <br> Development Partner in <strong>' + mainCity + '</strong>',
+                "Design": 'Magento Ecommerce Design <br> in <strong>' + mainCity + '</strong>',
+                "Marketing": 'Creative Marketing Strategy for <br> Magento in <strong>' + mainCity + '</strong>'
             },
         "shopify":
             {
-                "headingOne": 'Back-end <strong>Development</strong>',
-                "headingTwo": 'Front-end <strong>Development</strong>',
-                "headingThree": "Platform <strong>Integrations</strong>",
-                "headingFour": "Plugin <strong>Development</strong>"
+                "Back-end": 'Back-end <strong>Development</strong>',
+                "Front-end": 'Front-end <strong>Development</strong>',
+                "Platform": "Platform <strong>Integrations</strong>",
+                "Plugin": "Plugin <strong>Development</strong>"
             },
         "wordpress":
             {
-                "headingOne": 'Back-end <strong>Development</strong>',
-                "headingTwo": 'Front-end <strong>Development</strong>',
-                "headingThree": "Platform <strong>Integrations</strong>",
-                "headingFour": "Plugin <strong>Development</strong>"
+                "Back-end": 'Back-end <strong>Development</strong>',
+                "Front-end": 'Front-end <strong>Development</strong>',
+                "Platform": "Platform <strong>Integrations</strong>",
+                "Plugin": "Plugin <strong>Development</strong>"
             }
     }
     # Add all founded values by searchKey to result[]
@@ -392,7 +394,6 @@ def createMainContainer(searchKey, mainCity, mainCategory):
     try:
         result[0]
     except IndexError:
-        print('createMainContainer index error')
         pass
     else:
         # We need to check len of result list
@@ -440,9 +441,9 @@ def saveFile(mainCity, mainCategory):
     try:
         os.mkdir(folder)
     except OSError:
-        print("Creation of the directory %s failed" % folder)
+        pass
     else:
-        print("Successfully created the directory %s " % folder)
+        pass
 
     # Initialize document
     document = Document()
@@ -462,6 +463,7 @@ def saveFile(mainCity, mainCategory):
     document.add_page_break()
     # Save document in specific folder
     document.save(folder + '/' + file)
+    print('==> ' + mainCity.upper() + ' pages have been created' + '\n')
 
 
 if __name__ == '__main__':
@@ -471,7 +473,7 @@ if __name__ == '__main__':
     And creates websitesDict which contains structured info
     
     Then we run two loops (all cities, all categories)
-    For every city we create 5
+    For every city we create 4 files (4 categories)
     """
     getFile('websites.txt', websitesList)
     getFile('cities.txt', citiesList)
@@ -479,4 +481,4 @@ if __name__ == '__main__':
     for city in citiesList:
         for category in categoryList:
             contentCreator(city, category)
-            saveFile(city, category)
+            # saveFile(city, category)

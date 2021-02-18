@@ -3,7 +3,7 @@ categoryDict = {
     'website-development': 'Development',
     'website-design': 'Design',
     'magento-agency': 'Magento',
-    'wordpress-woocommerce-development-agency': 'Wordpress',
+    'wordpress-woocommerce-development-agency': 'WordPress or WooCommerce',
     'shopify-development-agency': 'Shopify'
 }
 
