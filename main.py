@@ -278,7 +278,7 @@ def filterHeaderParagraph(mainCity, mainCategory):
     :return: metaDict[mainCategory]
     """
     headerParagraphDict = {
-        'design': 'We provide full-stack developers in ' + mainCity + '. Our agency support clients around Manchester and surrounding areas',
+        'design': 'We provide full-stack developers in ' + mainCity + '. Our agency support clients around ' + mainCity + ' and surrounding areas',
         'development': 'We provide full-stack development and support service in ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
         'magento': 'We provide full-stack Magento development and support service in ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
         'shopify': 'We provide full-stack Shopify development and support service ' + mainCity + ' with a primary focus on month-by-month improvements to store resulting in better performance, rankings and revenue.',
